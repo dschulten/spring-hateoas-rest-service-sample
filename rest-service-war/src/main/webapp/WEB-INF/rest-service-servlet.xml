@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:util="http://www.springframework.org/schema/util" xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+  <context:component-scan base-package="de.escalon.rest" />
+
+  <!-- data converters to let the services talk JSON -->
+  <bean
+    class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    <property name="messageConverters">
+      <list>
+        <ref bean="jsonConverter" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="jsonConverter"
+    class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+    <property name="supportedMediaTypes" value="application/json" />
+    <property name="objectMapper" ref="jacksonObjectMapper" />
+  </bean>
+
+  <bean id="jacksonObjectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
+
+  <bean id="jacksonSerializationConfig" class="org.codehaus.jackson.map.SerializationConfig"
+    factory-bean="jacksonObjectMapper" factory-method="getSerializationConfig" />
+
+
+  <!-- Configuration of the serialization: -->
+
+  <!-- Ensure null Objects/values are ignored and not shown in the produced
+    jason message -->
+  <bean
+    class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject" ref="jacksonSerializationConfig" />
+    <property name="targetMethod" value="setSerializationInclusion" />
+    <property name="arguments">
+      <list>
+        <value
+          type="org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion">NON_NULL</value>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Date is converted to ISO String, not to long timestamp -->
+  <!-- <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"> -->
+  <!-- <property name="targetObject" ref="jacksonSerializationConfig" /> -->
+  <!-- <property name="targetMethod" value="disable" /> -->
+  <!-- <property name="arguments"> -->
+  <!-- <list> -->
+  <!-- <value type="org.codehaus.jackson.map.SerializationConfig.Feature">WRITE_DATES_AS_TIMESTAMPS</value> -->
+  <!-- </list> -->
+  <!-- </property> -->
+  <!-- </bean> -->
+
+  <bean
+    class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass"
+      value="org.springframework.web.servlet.view.JstlView" />
+    <property name="prefix" value="/views/" />
+    <property name="suffix" value=".jsp" />
+  </bean>
+
+</beans>

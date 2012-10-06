@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite failures="0" time="0.032" errors="0" skipped="0" tests="1" name="de.escalon.rest.AppTest">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="C:\Programme\Java\jdk1.6.0_31\jre\bin"/>
+    <property name="java.vm.version" value="20.6-b01"/>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."/>
+    <property name="java.vendor.url" value="http://java.sun.com/"/>
+    <property name="path.separator" value=";"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="DE"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="Service Pack 3"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="C:\projects\hateoas\rest-service-sample-parent"/>
+    <property name="java.runtime.version" value="1.6.0_31-b05"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="java.endorsed.dirs" value="C:\Programme\Java\jdk1.6.0_31\jre\lib\endorsed"/>
+    <property name="os.arch" value="x86"/>
+    <property name="java.io.tmpdir" value="C:\DOKUME~1\qqybk2l\LOKALE~1\Temp\"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows XP"/>
+    <property name="classworlds.conf" value="C:\projects\hateoas\.metadata\.plugins\org.eclipse.m2e.core\launches\m2conf3455534250118347771.tmp"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Programme\Java\jdk1.6.0_31\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Programme\MQClient\Java\lib;C:\Programme\Tab3\bin;C:\Programme\Prismaclient;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Programme\Netchange;C:\Programme\IBM\Personal Communications;C:\Programme\IBM\Trace Facility;C:\Programme\ObjREXX;C:\Programme\Gemeinsame Dateien\System\MSMAPI\1031\;C:\Programme\secude\sbus\lib;C:\Programme\SECUDE\signon;C:\Programme\SAS\Shared Files\Formats;C:\Programme\IBM\SQLLIB\BIN;C:\Programme\IBM\SQLLIB\FUNCTION;C:\PROGRA~1\IBM\SQLLIB\BIN;C:\PROGRA~1\IBM\SQLLIB\FUNCTION;C:\Programme\Utimaco\SafeGuard Easy\;C:\Programme\Oracle\OraClient10g\bin;C:\Programme\Microsoft SQL Server\80\Tools\BINN;C:\Programme\Microsoft SQL Server\80\Tools\Binn\;C:\Programme\Microsoft SQL Server\90\Tools\binn\;C:\Programme\Microsoft SQL Server\90\DTS\Binn\;C:\Programme\Microsoft SQL Server\90\Tools\Binn\VSShell\Common7\IDE\;C:\Programme\Microsoft Visual Studio 8\Common7\IDE\PrivateAssemblies\;C:\Programme\ALIS;C:\Programme\FileNet\IDM;C:\Programme\FileNet\Shared;C:\Programme\FileNet\FNSW\CLIENT\SHOBJ;C:\Programme\FileNet\FNSW\CLIENT\BIN;C:\Programme\IBMDebug\bin;C:\Programme\Hyperion\essbase\bin;C:\Programme\KomTVA\bin;C:\Programme\FileNet\VW;C:\Programme\CID;C:\Python26;C:\Python26\Scripts;C:\Programme\ASF\apache-maven-3.0.4\bin;C:\Programme\TortoiseSVN\bin;C:\batches\unxutils\usr\local\wbin;C:\Programme\Mercurial;C:\Programme\MQClient\bin;C:\Programme\PyCmd;C:\Programme\jEdit;C:\Programme\Subversion\bin;C:\Programme\Enterprise Vault\EVClient\;C:\Programme\MQClient\ADAG\bin;C:\Programme\MQClient\exits;."/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="50.0"/>
+    <property name="sun.management.compiler" value="HotSpot Client Compiler"/>
+    <property name="os.version" value="5.1"/>
+    <property name="user.home" value="C:\Dokumente und Einstellungen\qqybk2l"/>
+    <property name="user.timezone" value="Europe/Berlin"/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="java.specification.version" value="1.6"/>
+    <property name="user.name" value="qqybk2l"/>
+    <property name="java.class.path" value="/C:/Programme/eclipse/3.7.2/plugins/org.eclipse.m2e.maven.runtime_1.1.0.20120529-1956/jars/plexus-classworlds-2.4.jar"/>
+    <property name="java.vm.specification.version" value="1.0"/>
+    <property name="sun.arch.data.model" value="32"/>
+    <property name="java.home" value="C:\Programme\Java\jdk1.6.0_31\jre"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B -s C:\Dokumente und Einstellungen\qqybk2l\.m2\settings.xml install"/>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="user.language" value="de"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.version" value="1.6.0_31"/>
+    <property name="java.ext.dirs" value="C:\Programme\Java\jdk1.6.0_31\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext"/>
+    <property name="sun.boot.class.path" value="C:\Programme\Java\jdk1.6.0_31\jre\lib\resources.jar;C:\Programme\Java\jdk1.6.0_31\jre\lib\rt.jar;C:\Programme\Java\jdk1.6.0_31\jre\lib\sunrsasign.jar;C:\Programme\Java\jdk1.6.0_31\jre\lib\jsse.jar;C:\Programme\Java\jdk1.6.0_31\jre\lib\jce.jar;C:\Programme\Java\jdk1.6.0_31\jre\lib\charsets.jar;C:\Programme\Java\jdk1.6.0_31\jre\lib\modules\jdk.boot.jar;C:\Programme\Java\jdk1.6.0_31\jre\classes"/>
+    <property name="java.vendor" value="Sun Microsystems Inc."/>
+    <property name="maven.home" value="C:\projects\hateoas\rest-service-sample-parent\EMBEDDED"/>
+    <property name="file.separator" value="\"/>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.desktop" value="windows"/>
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86"/>
+  </properties>
+  <testcase time="0" classname="de.escalon.rest.AppTest" name="testApp"/>
+</testsuite>
