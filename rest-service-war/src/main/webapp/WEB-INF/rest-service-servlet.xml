@@ -19,8 +19,13 @@
     <property name="messageConverters">
       <list>
         <ref bean="jsonConverter" />
+        <ref bean="stringConverter" />
       </list>
     </property>
+  </bean>
+
+  <bean id="stringConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+    <property name="supportedMediaTypes" value="text/html" />
   </bean>
 
   <bean id="jsonConverter"

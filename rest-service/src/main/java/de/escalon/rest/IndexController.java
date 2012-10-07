@@ -25,11 +25,17 @@ public class IndexController {
         Link products = linkTo(ProductController.class).withRel("products");
         Link personProducts = linkTo(PersonProductController.class, 1L)
                 .withRel("personProducts");
+        Link personResources = linkTo(methodOn(PersonController.class).showAllAsResources()).withRel("peopleAsResources");
+        Link pagedResources = linkTo(methodOn(PersonController.class).showAllPaged()).withRel("peoplePaged");
+        Link search = linkTo(methodOn(PersonController.class).search(null)).withRel("search");
 
+        links.add(search);
         links.add(people);
         links.add(person);
         links.add(products);
         links.add(personProducts);
+        links.add(personResources);
+        links.add(pagedResources);
         return new HttpEntity<List<Link>>(links);
     }
 
@@ -39,6 +45,8 @@ public class IndexController {
         List<Link> links = new ArrayList<Link>();
         links.add(linkTo(IndexController.class).withSelfRel());
         links.add(linkTo(PersonController.class).withRel("people"));
+        links.add(linkTo(methodOn(PersonController.class).search(0L)).withRel("search"));
+
         model.put("links", links); // referenced by ${links} in the jsp
         return "home";
     }

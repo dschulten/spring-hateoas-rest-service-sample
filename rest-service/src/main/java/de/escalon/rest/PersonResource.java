@@ -1,8 +1,8 @@
 package de.escalon.rest;
 
-import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.Resource;
 
-public class PersonResource extends ResourceSupport {
+public class PersonResource extends Resource<Person> {
 
     String firstname;
     String lastname;

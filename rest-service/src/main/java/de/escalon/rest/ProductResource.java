@@ -1,8 +1,8 @@
 package de.escalon.rest;
 
-import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.Resource;
 
-public class ProductResource extends ResourceSupport {
+public class ProductResource extends Resource<Product> {
 
     private String productName;
 
