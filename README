@@ -1,0 +1,7 @@
+Build the sample using mvn install
+Change to rest-service-war
+Run mvn jetty:run-exploded
+Open your favorite restclient and go to
+http://localhost:8080/rest-service-war
+
+Be sure to pass Accept: application/json in order to see the json output.
