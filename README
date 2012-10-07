@@ -1,7 +1,14 @@
 Build the sample using mvn install
 Change to rest-service-war
-Run mvn jetty:run-exploded
-Open your favorite restclient and go to
+Run mvn jetty:run
+Open your favorite rest client and go to
+
+http://localhost:8080/
+
+- or -
+
+In your IDE, run jetty, e.g. in Eclipse I recommend the run-jetty-run plugin. Depending on your launch configuration, the service URL will be
+
 http://localhost:8080/rest-service-war
 
-Be sure to pass Accept: application/json in order to see the json output.
+Be sure to pass Accept: application/json from your rest client in order to see the json output. 
