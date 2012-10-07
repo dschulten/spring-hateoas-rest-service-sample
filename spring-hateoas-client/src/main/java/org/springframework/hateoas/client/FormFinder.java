@@ -2,5 +2,5 @@ package org.springframework.hateoas.client;
 
 public interface FormFinder {
 
-    Navigator findForm(String name);
+    Browser findForm(String name);
 }

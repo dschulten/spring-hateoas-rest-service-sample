@@ -8,8 +8,10 @@ import org.springframework.stereotype.Component;
 public class ProductAccess {
 
     public Iterable<? extends Product> getProductsOfPerson(Long personId) {
-        Product product = new Product(1L, "Washing Machine");
-        return Arrays.asList(product);
+
+        return Arrays.asList(new Product(1L,
+                "Starfleet Standard Tricorder"), new Product(2L,
+                "Flux Capacitor"), new Product(1L, "Phase Calibrator"));
 
     }
 

@@ -1,6 +1,7 @@
 package de.escalon.rest;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,13 @@ public class IndexController {
     public HttpEntity<List<Link>> showLinks() {
         List<Link> links = new ArrayList<Link>();
         Link people = linkTo(PersonController.class).withRel("people");
+        Link person = linkTo(methodOn(PersonController.class).show(1L)).withRel("person");
         Link products = linkTo(ProductController.class).withRel("products");
-        Link personProducts = linkTo(PersonProductController.class, 1L).withRel("personProducts");
-
+        Link personProducts = linkTo(PersonProductController.class, 1L)
+                .withRel("personProducts");
 
         links.add(people);
+        links.add(person);
         links.add(products);
         links.add(personProducts);
         return new HttpEntity<List<Link>>(links);

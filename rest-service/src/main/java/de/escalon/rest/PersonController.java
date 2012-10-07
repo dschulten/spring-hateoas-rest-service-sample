@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @Controller
 @RequestMapping("/people")
@@ -29,6 +30,9 @@ public class PersonController {
         Person person = personAccess.getPerson(id);
         PersonResourceAssembler assembler = new PersonResourceAssembler();
         PersonResource resource = assembler.toResource(person);
+        resource.add(linkTo(
+                methodOn(ProductController.class).getProductsOfPerson(id))
+                .withRel("products"));
         return new HttpEntity<PersonResource>(resource);
     }
 }

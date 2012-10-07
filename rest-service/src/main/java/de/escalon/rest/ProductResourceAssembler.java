@@ -10,7 +10,7 @@ public class ProductResourceAssembler extends
     }
 
     public ProductResource toResource(Product entity) {
-        ProductResource to = new ProductResource();
+        ProductResource to = createResource(entity);
         to.setProductName(entity.getProductName());
         return to;
     }
