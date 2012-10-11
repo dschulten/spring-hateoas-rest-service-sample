@@ -9,12 +9,14 @@ import org.springframework.http.HttpHeaders;
 
 public interface Browsable {
 
-    void process(InputStream content, HttpHeaders httpHeaders);
+	void process(InputStream content, HttpHeaders httpHeaders);
 
-    FormRequest getFormRequest(String formName, Map<String, List<? extends Object>> args);
+	FormRequest getFormRequest(String formName, Map<String, List<? extends Object>> args);
 
-    Link getRel(String rel);
+	Link getRel(String rel);
 
-    String toString();
+	String toString();
+
+	Object getParsedContent();
 
 }

@@ -17,30 +17,27 @@ import org.w3c.dom.Document;
 
 public class XmlDocumentRelFinderTest {
 
-    private Document document;
+	private Document document;
 
-    @Before
-    public void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-        InputStream in = new ByteArrayInputStream(
-                XHtmlBrowsableTest.FORM.getBytes());
-        try {
-            document = DocumentBuilderFactory.newInstance()
-                    .newDocumentBuilder().parse(in);
-        } finally {
-            in.close();
-        }
-    }
+		InputStream in = new ByteArrayInputStream(XHtmlBrowsableTest.FORM.getBytes());
+		try {
+			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(in);
+		} finally {
+			in.close();
+		}
+	}
 
-    @Test
-    public void testFindRels() throws Exception {
-        XmlDocumentRelFinder xmlDocumentRelFinder = new XmlDocumentRelFinder(
-                document);
-        Map<String, Link> relsFromDocument = xmlDocumentRelFinder.findRels();
-        assertTrue(relsFromDocument.containsKey(BACK_REL));
-        Link link = relsFromDocument.get(BACK_REL);
-        assertEquals("/", link.getHref());
-        assertEquals(BACK_REL, link.getRel());
-    }
+	@Test
+	public void testFindRels() throws Exception {
+		XmlDocumentRelFinder xmlDocumentRelFinder = new XmlDocumentRelFinder(document);
+		Map<String, Link> relsFromDocument = xmlDocumentRelFinder.findRels();
+		assertTrue(relsFromDocument.containsKey(BACK_REL));
+		Link link = relsFromDocument.get(BACK_REL);
+		assertEquals("/", link.getHref());
+		assertEquals(BACK_REL, link.getRel());
+	}
 
 }

@@ -13,24 +13,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/products")
 public class ProductController {
 
-    @Autowired
-    private ProductAccess productAccess;
+	@Autowired
+	private ProductAccess productAccess;
 
-    @RequestMapping(value = "/persons/{personId}", method = RequestMethod.GET)
-    public HttpEntity<List<ProductResource>> getProductsOfPerson(@PathVariable Long personId) {
-        Iterable<? extends Product> products = productAccess
-                .getProductsOfPerson(personId);
-        ProductResourceAssembler assembler = new ProductResourceAssembler();
-        List<ProductResource> resources = assembler.toResources(products);
-        return new HttpEntity<List<ProductResource>>(resources);
-    }
+	@RequestMapping(value = "/persons/{personId}", method = RequestMethod.GET)
+	public HttpEntity<List<ProductResource>> getProductsOfPerson(@PathVariable Long personId) {
+		Iterable<? extends Product> products = productAccess.getProductsOfPerson(personId);
+		ProductResourceAssembler assembler = new ProductResourceAssembler();
+		List<ProductResource> resources = assembler.toResources(products);
+		return new HttpEntity<List<ProductResource>>(resources);
+	}
 
-    @RequestMapping(value = "/{productId}", method = RequestMethod.GET)
-    public HttpEntity<ProductResource> show(@PathVariable Long productId) {
-        Product product = productAccess.getProduct(productId);
-        ProductResourceAssembler assembler = new ProductResourceAssembler();
-        ProductResource resource = assembler.toResource(product);
-        return new HttpEntity<ProductResource>(resource);
-    }
+	@RequestMapping(value = "/{productId}", method = RequestMethod.GET)
+	public HttpEntity<ProductResource> show(@PathVariable Long productId) {
+		Product product = productAccess.getProduct(productId);
+		ProductResourceAssembler assembler = new ProductResourceAssembler();
+		ProductResource resource = assembler.toResource(product);
+		return new HttpEntity<ProductResource>(resource);
+	}
 
 }

@@ -4,9 +4,8 @@ import java.util.Map;
 
 import org.springframework.hateoas.Link;
 
-
 public interface RelFinder {
 
-    Map<String, Link> findRels();
+	Map<String, Link> findRels();
 
 }

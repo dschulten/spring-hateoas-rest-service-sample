@@ -27,58 +27,48 @@ import org.springframework.http.HttpHeaders;
 @RunWith(MockitoJUnitRunner.class)
 public class BrowsableResponseHandlerTest {
 
-    BrowsableResponseHandler handler = new BrowsableResponseHandler();
+	BrowsableResponseHandler handler = new BrowsableResponseHandler();
 
-    @Mock
-    private BrowsableRegistry navigatorRegistry;
+	@Mock
+	private BrowsableRegistry navigatorRegistry;
 
-    @Mock
-    private Browsable expectedBrowsable;
+	@Mock
+	private Browsable expectedBrowsable;
 
-    @Before
-    public void setUp() throws Exception {
-        handler.setNavigatorRegistry(navigatorRegistry);
-    }
+	@Before
+	public void setUp() throws Exception {
+		handler.setBrowsableRegistry(navigatorRegistry);
+	}
 
-    @Test
-    public void testHandleResponseXhtml() throws ClientProtocolException,
-            IOException {
+	@Test
+	public void testHandleResponseXhtml() throws ClientProtocolException, IOException {
 
-        HttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1,
-                HttpStatus.SC_OK, "OK");
-        StringEntity entity = new StringEntity("important message",
-                ContentType.create("text/xhtml", "UTF-8"));
-        response.setEntity(entity);
+		HttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK");
+		StringEntity entity = new StringEntity("important message", ContentType.create("text/xhtml", "UTF-8"));
+		response.setEntity(entity);
 
-        // expect
-        when(navigatorRegistry.getBrowsable("text/xhtml")).thenReturn(
-                expectedBrowsable);
+		// expect
+		when(navigatorRegistry.getBrowsable("text/xhtml")).thenReturn(expectedBrowsable);
 
-        Browsable browsable = handler.handleResponse(response);
-        assertSame(expectedBrowsable, browsable);
-        verify(expectedBrowsable).process(Mockito.<InputStream> any(),
-                Mockito.<HttpHeaders> any());
-    }
+		Browsable browsable = handler.handleResponse(response);
+		assertSame(expectedBrowsable, browsable);
+		verify(expectedBrowsable).process(Mockito.<InputStream> any(), Mockito.<HttpHeaders> any());
+	}
 
-    @Test
-    public void testHandleResponseXForm() throws ClientProtocolException,
-            IOException {
+	@Test
+	public void testHandleResponseXForm() throws ClientProtocolException, IOException {
 
-        HttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1,
-                HttpStatus.SC_OK, "OK");
-        StringEntity entity = new StringEntity("important message",
-                ContentType.create("application/xhtml+xml", "UTF-8"));
-        response.setEntity(entity);
+		HttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK");
+		StringEntity entity = new StringEntity("important message", ContentType.create("application/xhtml+xml", "UTF-8"));
+		response.setEntity(entity);
 
-        // expect
-        when(navigatorRegistry.getBrowsable("application/xhtml+xml"))
-                .thenReturn(expectedBrowsable);
+		// expect
+		when(navigatorRegistry.getBrowsable("application/xhtml+xml")).thenReturn(expectedBrowsable);
 
-        Browsable navigator = handler.handleResponse(response);
+		Browsable navigator = handler.handleResponse(response);
 
-        assertSame(expectedBrowsable, navigator);
-        verify(expectedBrowsable).process(Mockito.<InputStream> any(),
-                Mockito.<HttpHeaders> any());
-    }
+		assertSame(expectedBrowsable, navigator);
+		verify(expectedBrowsable).process(Mockito.<InputStream> any(), Mockito.<HttpHeaders> any());
+	}
 
 }

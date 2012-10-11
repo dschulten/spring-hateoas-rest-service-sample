@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/people/{personId}/products")
 public class PersonProductController {
 
-    private ProductAccess productAccess;
+	private ProductAccess productAccess;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public HttpEntity<List<ProductResource>> getProductsOfPerson(Long personId) {
-        Iterable<? extends Product> people = productAccess.getProductsOfPerson(personId);
-        ProductResourceAssembler assembler = new ProductResourceAssembler();
-        List<ProductResource> resources = assembler.toResources(people);
-        return new HttpEntity<List<ProductResource>>(resources);
-    }
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public HttpEntity<List<ProductResource>> getProductsOfPerson(Long personId) {
+		Iterable<? extends Product> people = productAccess.getProductsOfPerson(personId);
+		ProductResourceAssembler assembler = new ProductResourceAssembler();
+		List<ProductResource> resources = assembler.toResources(people);
+		return new HttpEntity<List<ProductResource>>(resources);
+	}
 
 }

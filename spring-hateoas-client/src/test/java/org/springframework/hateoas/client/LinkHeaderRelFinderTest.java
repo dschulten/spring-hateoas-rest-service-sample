@@ -12,82 +12,73 @@ import org.springframework.http.HttpHeaders;
 
 public class LinkHeaderRelFinderTest {
 
-    @Before
-    public void setUp() throws Exception {
-    }
+	@Before
+	public void setUp() throws Exception {
+	}
 
-    @Test
-    public void testFindRels() throws Exception {
+	@Test
+	public void testFindRels() throws Exception {
 
-    }
+	}
 
-    @Test
-    public void testRelsFromLinkHeaderSimpleLink() throws Exception {
-        HttpHeaders headers = new HttpHeaders();
-        String headerValue = "<http://example.com/TheBook/chapter2>; "
-                + "rel=\"previous\"; " + "title=\"previous chapter\"";
-        headers.set("Link", headerValue);
-        LinkHeaderRelFinder linkHeaderRelFinder = new LinkHeaderRelFinder(
-                headers);
+	@Test
+	public void testRelsFromLinkHeaderSimpleLink() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		String headerValue = "<http://example.com/TheBook/chapter2>; " + "rel=\"previous\"; "
+				+ "title=\"previous chapter\"";
+		headers.set("Link", headerValue);
+		LinkHeaderRelFinder linkHeaderRelFinder = new LinkHeaderRelFinder(headers);
 
-        Map<String, Link> relsFromLinkHeader = linkHeaderRelFinder.findRels();
+		Map<String, Link> relsFromLinkHeader = linkHeaderRelFinder.findRels();
 
-        assertTrue("rel previous not found",
-                relsFromLinkHeader.containsKey("previous"));
-        Link link = relsFromLinkHeader.get("previous");
-        assertEquals("http://example.com/TheBook/chapter2", link.getHref());
-        assertEquals("previous", link.getRel());
-    }
+		assertTrue("rel previous not found", relsFromLinkHeader.containsKey("previous"));
+		Link link = relsFromLinkHeader.get("previous");
+		assertEquals("http://example.com/TheBook/chapter2", link.getHref());
+		assertEquals("previous", link.getRel());
+	}
 
-    @Test
-    public void testRelsFromLinkHeaderExtensionRel() throws Exception {
+	@Test
+	public void testRelsFromLinkHeaderExtensionRel() throws Exception {
 
-        String extensionRel = "http://example.net/foo";
-        HttpHeaders headers = new HttpHeaders();
-        String extensionRelLink = "</>; rel=\"" + extensionRel + "\"";
-        headers.set("Link", extensionRelLink);
+		String extensionRel = "http://example.net/foo";
+		HttpHeaders headers = new HttpHeaders();
+		String extensionRelLink = "</>; rel=\"" + extensionRel + "\"";
+		headers.set("Link", extensionRelLink);
 
-        LinkHeaderRelFinder linkHeaderRelFinder = new LinkHeaderRelFinder(
-                headers);
+		LinkHeaderRelFinder linkHeaderRelFinder = new LinkHeaderRelFinder(headers);
 
-        Map<String, Link> relsFromLinkHeader = linkHeaderRelFinder.findRels();
+		Map<String, Link> relsFromLinkHeader = linkHeaderRelFinder.findRels();
 
-        assertTrue("rel " + extensionRel + " not found",
-                relsFromLinkHeader.containsKey(extensionRel));
-        Link link = relsFromLinkHeader.get(extensionRel);
-        assertEquals("/", link.getHref());
-        assertEquals(extensionRel, link.getRel());
+		assertTrue("rel " + extensionRel + " not found", relsFromLinkHeader.containsKey(extensionRel));
+		Link link = relsFromLinkHeader.get(extensionRel);
+		assertEquals("/", link.getHref());
+		assertEquals(extensionRel, link.getRel());
 
-    }
+	}
 
-    @Test
-    public void testRelsFromLinkHeaderMultiLink() throws Exception {
+	@Test
+	public void testRelsFromLinkHeaderMultiLink() throws Exception {
 
-        String previousRel = "previous";
-        String nextRel = "next";
-        HttpHeaders headers = new HttpHeaders();
-        String multiLink = "</TheBook/chapter2>;"
-                + "rel=\"previous\"; title*=UTF-8'de'letztes%20Kapitel,"
-                + "</TheBook/chapter4>;"
-                + "rel=\"next\"; title*=UTF-8'de'n%c3%a4chstes%20Kapitel";
-        headers.set("Link", multiLink);
-        LinkHeaderRelFinder linkHeaderRelFinder = new LinkHeaderRelFinder(
-                headers);
+		String previousRel = "previous";
+		String nextRel = "next";
+		HttpHeaders headers = new HttpHeaders();
+		String multiLink = "</TheBook/chapter2>;" + "rel=\"previous\"; title*=UTF-8'de'letztes%20Kapitel,"
+				+ "</TheBook/chapter4>;" + "rel=\"next\"; title*=UTF-8'de'n%c3%a4chstes%20Kapitel";
+		headers.set("Link", multiLink);
+		LinkHeaderRelFinder linkHeaderRelFinder = new LinkHeaderRelFinder(headers);
 
-        Map<String, Link> relsFromLinkHeader = linkHeaderRelFinder.findRels();
+		Map<String, Link> relsFromLinkHeader = linkHeaderRelFinder.findRels();
 
-        assertTrue("rel " + previousRel + " not found",
-                relsFromLinkHeader.containsKey(previousRel));
-        Link linkPrevious = relsFromLinkHeader.get(previousRel);
-        assertEquals("/TheBook/chapter2", linkPrevious.getHref());
-        assertEquals(previousRel, linkPrevious.getRel());
+		assertTrue("rel " + previousRel + " not found", relsFromLinkHeader.containsKey(previousRel));
+		Link linkPrevious = relsFromLinkHeader.get(previousRel);
+		assertEquals("/TheBook/chapter2", linkPrevious.getHref());
+		assertEquals(previousRel, linkPrevious.getRel());
 
-        assertTrue("rel " + nextRel + " not found",
-                relsFromLinkHeader.containsKey(nextRel));
-        Link linkNext = relsFromLinkHeader.get(nextRel);
-        assertEquals("/TheBook/chapter4", linkNext.getHref());
-        assertEquals(nextRel, linkNext.getRel());
+		assertTrue("rel " + nextRel + " not found", relsFromLinkHeader.containsKey(nextRel));
+		Link linkNext = relsFromLinkHeader.get(nextRel);
+		assertEquals("/TheBook/chapter4", linkNext.getHref());
+		assertEquals(nextRel, linkNext.getRel());
 
-    }
+	}
 
 }

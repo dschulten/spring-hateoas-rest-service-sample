@@ -1,7 +1,6 @@
 package org.springframework.hateoas.client.hc;
 
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -27,49 +26,42 @@ import org.springframework.http.HttpMethod;
 @RunWith(MockitoJUnitRunner.class)
 public class CommonsHttpClient4BrowserTest {
 
-    @Mock
-    private HttpClient httpClient;
-    @Mock
-    Browsable indexPage;
-    @Mock
-    Browsable searchForm;
-    @Mock
-    Browsable result;
+	@Mock
+	private HttpClient httpClient;
+	@Mock
+	Browsable indexPage;
+	@Mock
+	Browsable searchForm;
+	@Mock
+	Browsable result;
 
-    CommonsHttpClient4Browser htmlNavigator;
+	CommonsHttpClient4Browser browser;
 
-    @Before
-    public void setUp() throws Exception {
-        URI uri = new URI("http://localhost:8080/");
-        htmlNavigator = new CommonsHttpClient4Browser(uri);
-        htmlNavigator.setHttpClient(httpClient);
-    }
+	@Before
+	public void setUp() throws Exception {
+		URI uri = new URI("http://localhost:8080/");
+		browser = new CommonsHttpClient4Browser(uri);
+		browser.setHttpClient(httpClient);
+	}
 
-    @Test
-    public void testFollowRelAndSubmitForm() throws ClientProtocolException, IOException,
-            URISyntaxException {
-        Link expectedRel = new Link("/", "search");
+	@Test
+	public void testFollowRelAndSubmitForm() throws ClientProtocolException, IOException, URISyntaxException {
+		Link expectedRel = new Link("/", "search");
 
-        when(
-                httpClient.execute(Mockito.<HttpGet> any(),
-                        Mockito.<ResponseHandler<?>> any())).thenReturn(
-                indexPage, searchForm, result);
-        when(indexPage.getRel("search")).thenReturn(expectedRel);
-        when(
-                searchForm.getFormRequest(Mockito.eq("people"),
-                        Mockito.<Args> any())).thenReturn(
-                new FormRequest(HttpMethod.GET, "", new URI("/"), "", "UTF-8"));
+		when(httpClient.execute(Mockito.<HttpGet> any(), Mockito.<ResponseHandler<?>> any())).thenReturn(indexPage,
+				searchForm, result);
+		when(indexPage.getRel("search")).thenReturn(expectedRel);
+		when(searchForm.getFormRequest(Mockito.eq("people"), Mockito.<Args> any())).thenReturn(
+				new FormRequest(HttpMethod.GET, "", new URI("/"), "", "UTF-8"));
 
-        // TODO here I need a way of checking if I have what I am looking for,
-        // not just browsing
-        //
-        htmlNavigator.followRel("search").submitForm("people",
-                Args.from("customerId", 1));
+		// TODO here I need a way of checking if I have what I am looking for,
+		// not just browsing
+		//
+		browser.followRel("search").submitForm("people", Args.of("customerId", 1));
 
-        Browsable currentResource = htmlNavigator.getCurrentResource();
+		Browsable currentResource = browser.getCurrentResource();
 
-        assertSame(result, currentResource);
-    }
-
+		assertSame(result, currentResource);
+	}
 
 }

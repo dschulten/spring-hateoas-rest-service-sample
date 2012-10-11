@@ -9,20 +9,24 @@ import org.springframework.http.HttpHeaders;
 
 public class SirenBrowsable implements Browsable {
 
-    public void process(InputStream content, HttpHeaders httpHeaders) {
-        // TODO Auto-generated method stub
+	public void process(InputStream content, HttpHeaders httpHeaders) {
+		// TODO Auto-generated method stub
 
-    }
+	}
 
-    public FormRequest getFormRequest(String formName,
-            Map<String, List<? extends Object>> args) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public FormRequest getFormRequest(String formName, Map<String, List<? extends Object>> args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    public Link getRel(String rel) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public Link getRel(String rel) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object getParsedContent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
