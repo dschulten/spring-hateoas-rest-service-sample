@@ -46,4 +46,4 @@ The submitForm method saves the client the effort to build its own query links. 
 
 Note that the URLs can be changed by the server as needed. If the server chooses to change the search rel to /persons/query or whatever, the client adapts automatically.
 
-Currently the client is still constrained to a fixed chain of rels and forms. I am currently looking into ways to make the client more flexible here, based on the Follow Your Nose pattern. Feedback is most welcome.
+Currently the client is still constrained to a fixed chain of rels and forms. I am currently looking into ways to make the client more flexible here, based on the Follow Your Nose (http://www.w3.org/QA/2010/07/new_opportunities_for_linked_d.html) pattern. Feedback is most welcome.
