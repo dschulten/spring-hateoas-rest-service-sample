@@ -19,4 +19,31 @@ Make sure your browser understands and shows json (e.g. with Jsonovich for Firef
 
 The point is that this form can be generated automatically from the Controller RequestMappings, and that a ReST client can recognize and submit the form. No out-of-band information is necessary for a client that is looking, let's say, for the products of a customer. If the URL structure changes, the client adapts as long as the rels, the form names and the parameter names remain stable.
 
-The rest-client subproject features a client that follows the HATEOAS constraint. It is still in early stages, but it *is* able to follow rels, and submit forms.
+The rest-client subproject features a client that follows the HATEOAS constraint. It is still in early stages, but it *is* able to follow rels, and submit forms. In order to run it, just execute the App binary. It will retrieve the products of two persons as json and print them out.
+
+To give you an idea how the client does this, consider the following snippet from the rest-client:
+    URI entryPoint = new URI("http://localhost:8080/");
+    CommonsHttpClient4Browser browser = new CommonsHttpClient4Browser(entryPoint);
+    // ...
+  	browser.followRel("search")
+			.submitForm("searchPerson", Args.of("personId", 1))
+			.followRel("products");
+		System.out.println(browser.getCurrentResource().toString());
+
+with an output of
+
+starting at URI http://localhost:8080/
+following rel search to http://localhost:8080/people/search
+submitting form searchPerson with FormRequest [method=GET, requestBody=personId=1, uri=/people/person, contentType=application/x-www-form-urlencoded, encoding=UTF-8]
+following rel products to http://localhost:8080/products/persons/1
+
+--- result ---
+[{"links":[{"rel":"self","href":"http://localhost:8080/products/1"}],"productName":"Starfleet Standard Tricorder"}]
+--------------
+
+In followRel, the browser looks at rels in the Link header, in hmtl link and href elements and in json links. 
+The submitForm method saves the client the effort to build its own query links. Links are strictly created by the server.
+
+Note that the URLs can be changed by the server as needed. If the server chooses to change the search rel to /persons/query or whatever, the client adapts automatically.
+
+Currently the client is still constrained to a fixed chain of rels and forms. I am currently looking into ways to make the client more flexible here, based on the Follow Your Nose pattern. Feedback is most welcome.
