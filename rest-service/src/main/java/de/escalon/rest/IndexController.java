@@ -17,6 +17,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/")
 public class IndexController {
 
+	@RequestMapping(method = RequestMethod.GET, headers = "Accept=text/html", produces = { "text/html" })
+	public String showAllHtml(Map<String, Object> model) {
+		List<Link> links = new ArrayList<Link>();
+		links.add(linkTo(IndexController.class).withSelfRel());
+		links.add(linkTo(PersonController.class).withRel("people"));
+		links.add(linkTo(methodOn(PersonController.class).searchPersonForm()).withRel("search"));
+		// TODO form name should be defined here?
+
+		model.put("links", links); // referenced by ${links} in the jsp
+		return "home";
+	}
+
 	@RequestMapping(method = RequestMethod.GET, headers = "Accept=application/json, application/xml", produces = { "application/json" })
 	public HttpEntity<List<Link>> showLinks() {
 		List<Link> links = new ArrayList<Link>();
@@ -26,7 +38,7 @@ public class IndexController {
 		Link personProducts = linkTo(PersonProductController.class, 1L).withRel("personProducts");
 		Link personResources = linkTo(methodOn(PersonController.class).showAllAsResources()).withRel("peopleAsResources");
 		Link pagedResources = linkTo(methodOn(PersonController.class).showAllPaged()).withRel("peoplePaged");
-		Link search = linkTo(methodOn(PersonController.class).search(null)).withRel("search");
+		Link search = linkTo(methodOn(PersonController.class).searchPersonForm()).withRel("search");
 
 		links.add(search);
 		links.add(people);
@@ -38,16 +50,4 @@ public class IndexController {
 		return new HttpEntity<List<Link>>(links);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, headers = "Accept=text/html, text/xhtml", produces = { "text/html",
-			"text/xhtml" })
-	public String showAllHtml(Map<String, Object> model) {
-		List<Link> links = new ArrayList<Link>();
-		links.add(linkTo(IndexController.class).withSelfRel());
-		links.add(linkTo(PersonController.class).withRel("people"));
-		links.add(linkTo(methodOn(PersonController.class).search(0L)).withRel("search"));
-		// TODO form name should be defined here?
-
-		model.put("links", links); // referenced by ${links} in the jsp
-		return "home";
-	}
 }

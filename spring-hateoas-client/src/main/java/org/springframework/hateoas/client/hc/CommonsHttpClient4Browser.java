@@ -85,13 +85,12 @@ public class CommonsHttpClient4Browser implements Browser {
 
 	public Browser submitForm(String name, Args values) {
 		try {
-			// NavigableResponseHandler returns xhtml or xforms or whatever
-			// navigator, capable of handling its content
+			// ResponseHandler returns xhtml or xforms or whatever
+			// browsable, capable of handling its content
 			ResponseHandler<Browsable> responseHandler = new BrowsableResponseHandler();
 
 			FormRequest formRequest = getCurrentResource().getFormRequest(name, values);
-			System.out.println("submitting form " + name + " with args " + values + " request "
-					+ formRequest.getRequestBody());
+			System.out.println("submitting form " + name + " with " + formRequest);
 			URI uri = formRequest.getURI();
 			if (!uri.isAbsolute()) {
 				uri = new URI(context.toASCIIString() + uri.toASCIIString());

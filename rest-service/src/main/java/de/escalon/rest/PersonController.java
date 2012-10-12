@@ -10,8 +10,8 @@ import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.PagedResources.PageMetadata;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.mvc.Form;
+import org.springframework.hateoas.mvc.FormAction;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,9 +68,16 @@ public class PersonController {
 		return new HttpEntity<PersonResource>(resource);
 	}
 
+
 	@Form("searchPerson")
-	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public HttpEntity<? extends Object> search(@RequestParam(value = "personId", required = false) Long personId) {
+	@RequestMapping(value = "/search", method= RequestMethod.GET)
+	public HttpEntity<String> searchPersonForm() {
+		return new HttpEntity<String>("");
+	}
+
+	@FormAction(formName = "searchPerson")
+	@RequestMapping(value = "/person", method = RequestMethod.GET)
+	public HttpEntity<? extends Object> searchPerson(@RequestParam(value = "personId", required = false) Long personId) {
 
 		Person person = personAccess.getPerson(personId);
 		PersonResourceAssembler assembler = new PersonResourceAssembler();

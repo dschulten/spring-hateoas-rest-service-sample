@@ -41,4 +41,12 @@ public class FormRequest {
 		this.encoding = encoding;
 	}
 
+	@Override
+	public String toString() {
+		return "FormRequest [method=" + method + ", requestBody=" + requestBody + ", uri=" + uri + ", contentType="
+				+ contentType + ", encoding=" + encoding + "]";
+	}
+
+
+
 }
