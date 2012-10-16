@@ -21,7 +21,7 @@ Be sure to pass Accept: application/json from your rest client in order to see t
 
 We want to do ReST with HATEOAS. The resources come with the URLs leading to the next step in the application logic, the client does not need to know how to construct URLs. So let us browse the API like a HATEOAS enabled client would. 
 
-Make sure your browser understands and shows json (e.g. with Jsonovich for Firefox). Now you can start at the URL above. A simple HTML page shows a people URL and a search URL. Hit the search link. The search resource recognizes that you want to search for a person and asks you for a personId (any id from 1 to 100 is valid). If you pass a personId, the same search resource responds with a json object containing information about the person, and some additional links, such as the products owned by the person.
+Make sure your browser understands and shows json (e.g. with Jsonovich for Firefox). Now you can start at the URL above. A simple HTML page shows a people URL and a search URL. Hit the search link. The search resource asks you for a personId (any id from 1 to 100 is valid). If you pass a personId, the server responds with a json object containing information about the person, and some additional links, such as the products owned by the person.
 
 The point is that this form can be generated automatically from the Controller RequestMappings, and that a ReST client can recognize and submit the form. No out-of-band information is necessary for a client that is looking, let's say, for the products of a customer. If the URL structure changes, the client adapts as long as the rels, the form names and the parameter names remain stable.
 
