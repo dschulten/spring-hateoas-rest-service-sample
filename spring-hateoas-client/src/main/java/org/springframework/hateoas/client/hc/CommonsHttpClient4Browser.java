@@ -105,7 +105,7 @@ public class CommonsHttpClient4Browser implements Browser {
 			}
 			case POST: {
 				HttpPost httpPost = new HttpPost(uri);
-				StringEntity entity = new StringEntity("important message", ContentType.create(formRequest.getContentType(),
+				StringEntity entity = new StringEntity(formRequest.getRequestBody(), ContentType.create(formRequest.getContentType(),
 						formRequest.getEncoding()));
 				httpPost.setEntity(entity);
 				currentResource = httpClient.execute(httpPost, responseHandler);

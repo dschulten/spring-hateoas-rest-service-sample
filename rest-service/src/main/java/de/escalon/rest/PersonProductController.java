@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -14,7 +15,7 @@ public class PersonProductController {
 	private ProductAccess productAccess;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public HttpEntity<List<ProductResource>> getProductsOfPerson(Long personId) {
+	public HttpEntity<List<ProductResource>> getProductsOfPerson(@PathVariable Long personId) {
 		Iterable<? extends Product> people = productAccess.getProductsOfPerson(personId);
 		ProductResourceAssembler assembler = new ProductResourceAssembler();
 		List<ProductResource> resources = assembler.toResources(people);

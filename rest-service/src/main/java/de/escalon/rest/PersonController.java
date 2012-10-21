@@ -76,7 +76,7 @@ public class PersonController {
 		return new HttpEntity<ResourceDescriptor>(rd);
 	}
 
-	@RequestMapping(value = "/person", method = RequestMethod.GET, params = { "personId" })
+	@RequestMapping(value = "/person", method = RequestMethod.POST)
 	public HttpEntity<? extends Object> showPerson(@RequestParam(value = "personId") Long personId) {
 
 		Person person = personAccess.getPerson(personId);
