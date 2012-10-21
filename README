@@ -1,3 +1,9 @@
+Example server and client based on spring-hateoas, showcasing the capabilities of spring-hateoas.
+
+The goal is to have a framework which supports not only the creation of a hateoas enabled server api, but also a client framework capable of following the links which are embedded in the documents it receives, without knowing any URIs except for the entry point of the API.
+
+The client is heavily inspired by Jon Moore's Oredev talk.
+
 Build the sample using mvn install
 Change to rest-service-war
 Run mvn jetty:run
@@ -15,8 +21,40 @@ Be sure to pass Accept: application/json from your rest client in order to see t
 
 We want to do ReST with HATEOAS. The resources come with the URLs leading to the next step in the application logic, the client does not need to know how to construct URLs. So let us browse the API like a HATEOAS enabled client would. 
 
-Make sure your browser understands and shows json (e.g. with Jsonovich for Firefox). Now you can start at the URL above. A simple HTML page shows a people URL and a search URL. Hit the search link. The search resource recognizes that you want to search for a person and asks you for a personId (any id from 1 to 100 is valid). If you pass a personId, the same search resource responds with a json object containing information about the person, and some additional links, such as the products owned by the person.
+Make sure your browser understands and shows json (e.g. with Jsonovich for Firefox). Now you can start at the URL above. A simple HTML page shows a people URL and a search URL. Hit the search link. The search resource asks you for a personId (any id from 1 to 100 is valid). If you pass a personId, the server responds with a json object containing information about the person, and some additional links, such as the products owned by the person.
 
 The point is that this form can be generated automatically from the Controller RequestMappings, and that a ReST client can recognize and submit the form. No out-of-band information is necessary for a client that is looking, let's say, for the products of a customer. If the URL structure changes, the client adapts as long as the rels, the form names and the parameter names remain stable.
 
-The rest-client subproject features a client that follows the HATEOAS constraint. It is still in early stages, but it *is* able to follow rels, and submit forms.
+- or -
+
+Use the rest-client to browse the api.
+
+The rest-client subproject features a client that attempts to follow the HATEOAS constraint. It is still in early stages, but it *is* able to follow rels, and submit forms. In order to run it, just execute the App binary. It will retrieve the products of two persons as json and print them out.
+
+To give you an idea how the client does this, consider the following snippet from the rest-client:
+    URI entryPoint = new URI("http://localhost:8080/");
+    CommonsHttpClient4Browser browser = new CommonsHttpClient4Browser(entryPoint);
+    // ...
+  	browser.followRel("search")
+			.submitForm("searchPerson", Args.of("personId", 1))
+			.followRel("products");
+		System.out.println(browser.getCurrentResource().toString());
+
+with an output of
+
+starting at URI http://localhost:8080/
+following rel search to http://localhost:8080/people/search
+submitting form searchPerson with FormRequest [method=GET, requestBody=personId=1, uri=/people/person, contentType=application/x-www-form-urlencoded, encoding=UTF-8]
+following rel products to http://localhost:8080/products/persons/1
+
+--- result ---
+[{"links":[{"rel":"self","href":"http://localhost:8080/products/1"}],"productName":"Starfleet Standard Tricorder"}]
+--------------
+
+In followRel, the browser looks at rels in the Link header, in hmtl link and href elements and in json links. 
+The submitForm method saves the client the effort to build its own query links. Links are strictly created by the server.
+
+Note that the URLs can be changed by the server as needed. If the server chooses to change the search rel to /persons/query or whatever, the client adapts automatically.
+
+Currently the client is still constrained to a fixed chain of rels and forms. I am currently looking into ways to make the client more flexible here, based on the Follow Your Nose (http://www.w3.org/QA/2010/07/new_opportunities_for_linked_d.html) pattern. Another goal is to have some 'real' application state, not just a drill down on data.
+Feedback is most welcome.
