@@ -10,7 +10,7 @@ import org.springframework.hateoas.util.Args;
 
 /**
  * Hello world!
- * 
+ *
  */
 public class App {
 	public static void main(String[] args) throws Exception {
@@ -30,7 +30,9 @@ public class App {
 
 	private static void getProductsOfPerson(Browser browser, int personId) {
 
-		browser.followRel("search").submitForm("searchPerson", Args.of("personId", personId)).followRel("products");
+		browser.followRel("search")
+			.submitForm("searchPerson", Args.of("personId", personId))
+			.followRel("products");
 		System.out.println("\n--- result ---");
 		System.out.println(browser.getCurrentResource().toString());
 		System.out.println("--------------\n");

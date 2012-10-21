@@ -14,9 +14,7 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
-  <context:component-scan base-package="de.escalon.rest, org.springframework.hateoas.mvc" />
-
-  <aop:aspectj-autoproxy/>
+  <context:component-scan base-package="de.escalon.rest" />
 
   <!-- data converters to let the services talk JSON -->
   <bean
@@ -24,12 +22,12 @@
     <property name="messageConverters">
       <list>
         <ref bean="jsonConverter" />
-        <ref bean="stringConverter" />
+        <ref bean="htmlFormMessageConverter" />
       </list>
     </property>
   </bean>
 
-  <bean id="stringConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+  <bean id="htmlFormMessageConverter" class="org.springframework.hateoas.HtmlFormMessageConverter">
     <property name="supportedMediaTypes" value="text/html" />
   </bean>
 

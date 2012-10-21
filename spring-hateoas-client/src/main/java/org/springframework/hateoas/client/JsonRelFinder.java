@@ -19,7 +19,7 @@ public class JsonRelFinder implements RelFinder {
 		Map<String, Link> ret = new LinkedHashMap<String, Link>();
 
 		JsonNode jsonLinks = json.findValue("links");
-		if (jsonLinks.isArray()) {
+		if (jsonLinks != null && jsonLinks.isArray()) {
 			for (JsonNode jsonLink : jsonLinks) {
 				String rel = jsonLink.get("rel").getTextValue();
 				Link link = new Link(jsonLink.get("href").getTextValue(), rel);
