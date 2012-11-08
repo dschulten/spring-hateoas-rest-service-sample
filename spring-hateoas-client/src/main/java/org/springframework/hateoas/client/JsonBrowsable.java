@@ -1,6 +1,7 @@
 package org.springframework.hateoas.client;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,14 @@ public class JsonBrowsable implements Browsable {
 
 	public String toString() {
 		return json.toString();
+	}
+
+	public Map<String, Link> getRels() {
+		return rels;
+	}
+
+	public List<String> getForms() {
+		return Collections.emptyList();
 	}
 
 }

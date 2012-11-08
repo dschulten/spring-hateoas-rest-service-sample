@@ -2,6 +2,8 @@ package org.springframework.hateoas.client.hc;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -11,9 +13,12 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.client.FormRequest;
+import org.springframework.hateoas.client.Action;
 import org.springframework.hateoas.client.Browsable;
 import org.springframework.hateoas.client.Browser;
+import org.springframework.hateoas.client.FormRequest;
+import org.springframework.hateoas.client.Identifier;
+import org.springframework.hateoas.client.Inventory;
 import org.springframework.hateoas.util.Args;
 import org.springframework.hateoas.util.Failure;
 import org.springframework.http.HttpMethod;
@@ -62,21 +67,24 @@ public class CommonsHttpClient4Browser implements Browser {
 	 * Follows a rel, for well-known rels see String constants in {@link Link}
 	 */
 	public Browser followRel(String rel) {
+		Link target = getCurrentResource().getRel(rel);
+		System.out.println("following rel " + rel + " to " + target.getHref());
+		currentResource = followLink(target);
+
+		return this;
+	}
+
+	private Browsable followLink(Link target) {
 		try {
 			ResponseHandler<Browsable> responseHandler = new BrowsableResponseHandler();
-			Link target = getCurrentResource().getRel(rel);
-			System.out.println("following rel " + rel + " to " + target.getHref());
-
-			// TODO use options to see what methods are supported - currently,
-			// use GET
 			URI uri = new URI(target.getHref());
 			HttpGet httpGet = createGet(uri);
-			currentResource = httpClient.execute(httpGet, responseHandler);
+			Browsable browsable = httpClient.execute(httpGet, responseHandler);
 			setCurrentContext(uri);
+			return browsable;
 		} catch (Exception e) {
 			throw Failure.asUnchecked(e);
 		}
-		return this;
 	}
 
 	private void setCurrentContext(URI uri) throws URISyntaxException {
@@ -105,8 +113,8 @@ public class CommonsHttpClient4Browser implements Browser {
 			}
 			case POST: {
 				HttpPost httpPost = new HttpPost(uri);
-				StringEntity entity = new StringEntity(formRequest.getRequestBody(), ContentType.create(formRequest.getContentType(),
-						formRequest.getEncoding()));
+				StringEntity entity = new StringEntity(formRequest.getRequestBody(), ContentType.create(
+						formRequest.getContentType(), formRequest.getEncoding()));
 				httpPost.setEntity(entity);
 				currentResource = httpClient.execute(httpPost, responseHandler);
 				break;
@@ -119,6 +127,36 @@ public class CommonsHttpClient4Browser implements Browser {
 		} catch (Exception e) {
 			throw Failure.asUnchecked(e);
 		}
+	}
+
+	public Browsable browseFor(Identifier identifier, Inventory inventory) {
+		List<Action> script = inventory.getScript();
+		Identifier currentIdentifier = identifier;
+		currentResource = getCurrentResource();
+		// for (Action action : script) {
+		Iterator<Action> actions = script.iterator();
+		Action currentAction = actions.next();
+		Browsable found = null;
+		while (found == null) {
+			if (currentIdentifier.foundIn(currentResource)) {
+				currentIdentifier = currentIdentifier.getContainedIdentifier();
+				if (currentIdentifier == null) {
+					// no identifiers left, we have a match
+					found = currentResource;
+					break;
+				}
+			} else {
+				// TODO only if the current action is possible on the current resource
+				// otherwise start sensing
+				// TODO the rels to use might be embedded within collection items
+				currentResource = currentAction.execute(currentResource, this);
+				if (actions.hasNext())
+					currentAction = actions.next();
+				else 
+					currentAction = null;
+			}
+		}
+		return found;
 	}
 
 }

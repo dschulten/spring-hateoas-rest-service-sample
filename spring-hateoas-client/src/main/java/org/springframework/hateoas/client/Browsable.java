@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 
-public interface Browsable {
+public interface Browsable  {
 
 	void process(InputStream content, HttpHeaders httpHeaders);
 
@@ -18,5 +18,10 @@ public interface Browsable {
 	String toString();
 
 	Object getParsedContent();
+
+	Map<String, Link> getRels();
+
+	List<String> getForms();
+
 
 }

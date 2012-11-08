@@ -7,9 +7,10 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.on;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.PagedResources.PageMetadata;
-import org.springframework.hateoas.ResourceDescriptor;
+import org.springframework.hateoas.FormDescriptor;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpEntity;
@@ -25,6 +26,9 @@ public class PersonController {
 
 	@Autowired
 	PersonAccess personAccess;
+
+	@Autowired
+	ProductAccess productAccess;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public HttpEntity<List<PersonResource>> showAll() {
@@ -65,23 +69,27 @@ public class PersonController {
 		Person person = personAccess.getPerson(id);
 		PersonResourceAssembler assembler = new PersonResourceAssembler();
 		PersonResource resource = assembler.toResource(person);
+		Link describedBy = new Link("http://example.com/doc#customer", "describedBy");
+		resource.add(describedBy);
 		resource.add(linkToMethod(on(ProductController.class).getProductsOfPerson(id)).withRel("products"));
 		return new HttpEntity<PersonResource>(resource);
 	}
 
-	@RequestMapping(value = "/person", method = RequestMethod.GET)
-	public HttpEntity<ResourceDescriptor> searchPersonForm() {
-		ResourceDescriptor rd = ControllerLinkBuilder.linkToResource("searchPerson",
+	@RequestMapping(value = "/customer", method = RequestMethod.GET)
+	public HttpEntity<FormDescriptor> searchPersonForm() {
+		FormDescriptor form = ControllerLinkBuilder.createForm("searchPerson",
 				on(PersonController.class).showPerson(null));
-		return new HttpEntity<ResourceDescriptor>(rd);
+		return new HttpEntity<FormDescriptor>(form);
 	}
 
-	@RequestMapping(value = "/person", method = RequestMethod.POST)
+	@RequestMapping(value = "/customer", method = RequestMethod.GET, params = {"personId"})
 	public HttpEntity<? extends Object> showPerson(@RequestParam(value = "personId") Long personId) {
 
 		Person person = personAccess.getPerson(personId);
 		PersonResourceAssembler assembler = new PersonResourceAssembler();
 		PersonResource resource = assembler.toResource(person);
+		Link describedBy = new Link("http://example.com/doc#customer", "describedBy");
+		resource.add(describedBy);
 		resource.add(linkToMethod(on(ProductController.class).getProductsOfPerson(personId)).withRel("products"));
 		return new HttpEntity<PersonResource>(resource);
 	}

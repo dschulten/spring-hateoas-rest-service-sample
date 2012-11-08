@@ -3,7 +3,7 @@ package org.springframework.hateoas.client;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +19,8 @@ import org.springframework.hateoas.util.Failure;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.Assert;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -71,8 +73,8 @@ public class XHtmlBrowsable implements Browsable {
 			URI uri = new URI(actionString);
 			String encoding = "UTF-8";
 			String contentType = "application/x-www-form-urlencoded";
-			String requestBody = buildRequestBody(form, args, encoding);
-			return new FormRequest(httpMethod, requestBody, uri, contentType, encoding);
+			MultiValueMap<String, String> requestValues = buildRequestValues(form, args, encoding);
+			return new FormRequest(httpMethod, requestValues, uri, contentType, encoding);
 		} catch (Exception e) {
 			throw Failure.asUnchecked(e);
 		}
@@ -84,22 +86,37 @@ public class XHtmlBrowsable implements Browsable {
 		return form;
 	}
 
-	private String buildRequestBody(Node form, Map<String, List<? extends Object>> args, String encoding)
-			throws XPathExpressionException, UnsupportedEncodingException {
+	public List<String> getForms() {
+		try {
+			String xPathString = "//form";
+			NodeList forms = XmlHelper.nodesForXPath(document, xPathString);
+			List<String> formNames = new ArrayList<String>();
+			for (int i = 0; i < forms.getLength(); i++) {
+				Node form = forms.item(i);
+				NamedNodeMap attributes = form.getAttributes();
+				String name = XmlHelper.getAttribute("name", attributes);
+				formNames.add(name);
+			}
+			return formNames;
+		} catch (Exception e) {
+			throw Failure.asUnchecked(e);
+		}
+	}
+
+	private MultiValueMap<String, String> buildRequestValues(Node form, Map<String, List<? extends Object>> args,
+			String encoding) throws XPathExpressionException, UnsupportedEncodingException {
+
+		MultiValueMap<String, String> requestValues = new LinkedMultiValueMap<String, String>();
 
 		Map<String, List<? extends Object>> arguments = marshalArguments(form, args);
-		StringBuilder sb = new StringBuilder();
 		for (Entry<String, List<? extends Object>> entry : arguments.entrySet()) {
 			String key = entry.getKey();
 			List<? extends Object> values = entry.getValue();
 			for (Object value : values) {
-				if (sb.length() > 0)
-					sb.append("&");
-				sb.append(key).append("=");
-				sb.append(URLEncoder.encode(value.toString(), encoding));
+				requestValues.add(key, value.toString());
 			}
 		}
-		return sb.toString();
+		return requestValues;
 	}
 
 	private Map<String, List<? extends Object>> marshalArguments(Node form, Map<String, List<? extends Object>> args)
@@ -138,6 +155,10 @@ public class XHtmlBrowsable implements Browsable {
 
 	public Object getParsedContent() {
 		return document;
+	}
+
+	public Map<String, Link> getRels() {
+		return rels;
 	}
 
 	// private void marshalSelectArguments(Element form, Map<String, String>

@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -22,6 +21,7 @@ import org.springframework.hateoas.client.Browsable;
 import org.springframework.hateoas.client.FormRequest;
 import org.springframework.hateoas.util.Args;
 import org.springframework.http.HttpMethod;
+import org.springframework.util.LinkedMultiValueMap;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CommonsHttpClient4BrowserTest {
@@ -52,7 +52,7 @@ public class CommonsHttpClient4BrowserTest {
 				searchForm, result);
 		when(indexPage.getRel("search")).thenReturn(expectedRel);
 		when(searchForm.getFormRequest(Mockito.eq("people"), Mockito.<Args> any())).thenReturn(
-				new FormRequest(HttpMethod.GET, "", new URI("/"), "", "UTF-8"));
+				new FormRequest(HttpMethod.GET, new LinkedMultiValueMap<String, String>(), new URI("/"), "", "UTF-8"));
 
 		// TODO here I need a way of checking if I have what I am looking for,
 		// not just browsing

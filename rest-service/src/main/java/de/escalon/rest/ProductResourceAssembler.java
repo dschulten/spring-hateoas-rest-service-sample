@@ -14,4 +14,7 @@ public class ProductResourceAssembler extends ResourceAssemblerSupport<Product, 
 		return to;
 	}
 
+	
+	
+
 }
