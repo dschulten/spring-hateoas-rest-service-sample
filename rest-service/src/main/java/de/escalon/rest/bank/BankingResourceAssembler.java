@@ -9,7 +9,7 @@ public class BankingResourceAssembler extends ResourceAssemblerSupport<Banking, 
 	}
 
 	public BankingResource toResource(Banking entity) {
-		BankingResource bankingResource = createResource(entity, "hello");
+		BankingResource bankingResource = createResource(entity);
 		bankingResource.setBankName(entity.getBankName());
 		bankingResource.setBlz(entity.getBlz());
 		bankingResource.setBic(entity.getBic());

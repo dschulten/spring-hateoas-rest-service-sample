@@ -23,12 +23,27 @@
       <list>
         <ref bean="jsonConverter" />
         <ref bean="htmlFormMessageConverter" />
+        <ref bean="rdfConverter" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="rdfConverter"
+    class="org.springframework.hateoas.rdf.JenaRdfMessageConverter">
+    <property name="supportedMediaTypes">
+      <list>
+        <value>application/rdf+xml</value>
+        <value>application/xml</value>
       </list>
     </property>
   </bean>
 
   <bean id="htmlFormMessageConverter" class="org.springframework.hateoas.HtmlFormMessageConverter">
-    <property name="supportedMediaTypes" value="text/html" />
+    <property name="supportedMediaTypes">
+      <list>
+        <value>text/html</value>
+      </list>
+    </property>
   </bean>
 
   <bean id="jsonConverter"
@@ -45,7 +60,7 @@
 
   <!-- Configuration of the serialization: -->
 
-  <!-- Ensure null Objects/values are ignored and not shown in the produced
+  <!-- Ensure null Objects/values are ignored and not shown in the produced 
     jason message -->
   <bean
     class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">

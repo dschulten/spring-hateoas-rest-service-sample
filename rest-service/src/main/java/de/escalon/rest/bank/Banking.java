@@ -5,14 +5,14 @@ import java.util.Map;
 
 import org.springframework.hateoas.Identifiable;
 
-public class Banking implements Identifiable<Long> {
+public class Banking implements Identifiable<String> {
 
 	Map<String, Account> accounts = new HashMap<String, Account>();
-	
+
 	public Account getAccount(String number) {
 		return accounts.get(number);
 	}
-	
+
 	private String bankName;
 	private String blz;
 	private String bic;
@@ -36,8 +36,8 @@ public class Banking implements Identifiable<Long> {
 		return bic;
 	}
 
-	public Long getId() {
-		return 1L;
+	public String getId() {
+		return blz;
 	}
 
 	public Map<String, Account> getAccounts() {
