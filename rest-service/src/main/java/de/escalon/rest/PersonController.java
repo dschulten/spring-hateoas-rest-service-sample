@@ -77,12 +77,11 @@ public class PersonController {
 
 	@RequestMapping(value = "/customer", method = RequestMethod.GET)
 	public HttpEntity<FormDescriptor> searchPersonForm() {
-		FormDescriptor form = ControllerLinkBuilder.createForm("searchPerson",
-				on(PersonController.class).showPerson(null));
+		FormDescriptor form = ControllerLinkBuilder.createForm("searchPerson", on(PersonController.class).showPerson(null));
 		return new HttpEntity<FormDescriptor>(form);
 	}
 
-	@RequestMapping(value = "/customer", method = RequestMethod.GET, params = {"personId"})
+	@RequestMapping(value = "/customer", method = RequestMethod.GET, params = { "personId" })
 	public HttpEntity<? extends Object> showPerson(@RequestParam(value = "personId") Long personId) {
 
 		Person person = personAccess.getPerson(personId);
@@ -90,7 +89,21 @@ public class PersonController {
 		PersonResource resource = assembler.toResource(person);
 		Link describedBy = new Link("http://example.com/doc#customer", "describedBy");
 		resource.add(describedBy);
+
+		// variant 1: products are separate
 		resource.add(linkToMethod(on(ProductController.class).getProductsOfPerson(personId)).withRel("products"));
+
+		// variant 2: products are embedded in customer
+		// Iterable<? extends Product> products = productAccess.getProductsOfPerson(personId);
+		// ProductResourceAssembler prodAssembler = new ProductResourceAssembler();
+		// List<ProductResource> prodResources = prodAssembler.toResources(products);
+		// for (ProductResource productResource : prodResources) {
+		// productResource.add(new Link("http://example.com/doc#product", "describedBy"));
+		// }
+		// Resources<ProductResource> wrapped = new Resources<ProductResource>(prodResources, new Link(
+		// "http://example.com/doc#products", "describedBy"));
+		// resource.setProducts(wrapped);
+
 		return new HttpEntity<PersonResource>(resource);
 	}
 }

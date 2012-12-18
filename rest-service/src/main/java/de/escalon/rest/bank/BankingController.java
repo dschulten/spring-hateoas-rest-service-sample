@@ -40,12 +40,6 @@ public class BankingController {
 	@RequestMapping
 	public HttpEntity<BankingResource> getIndex() {
 
-		// TODO can I build a BankingResource which embeds:
-		// banking has account has transfer
-		// so that the client follows the rels account, transfer
-		// filling out the forms, like
-		// get a transfer of account of banking
-
 		BankingResourceAssembler assembler = new BankingResourceAssembler();
 		Banking banking = bankingAccess.getBanking();
 		BankingResource resource = assembler.toResource(banking);
@@ -55,26 +49,19 @@ public class BankingController {
 		return new HttpEntity<BankingResource>(resource);
 	}
 
+	@RequestMapping("/banking/{blz}")
+	public HttpEntity<BankingResource> getBanking(@PathVariable("blz") String blz) {
+		BankingResourceAssembler assembler = new BankingResourceAssembler();
+		Banking banking = bankingAccess.getBankingByBlz(blz);
+		BankingResource resource = assembler.toResource(banking);
+		resource.add(new Link("http://localhost:8080/banking/ns/bank", "describedBy"));
+		resource.add(ControllerLinkBuilder.linkToMethod(on(BankingController.class).bankAccountForm()).withRel(
+				"http://localhost:8080/banking/ns/account"));
+		return new HttpEntity<BankingResource>(resource);
+	}
+
 	@RequestMapping("/ns/bank")
 	public HttpEntity<Model> getBankDescription() {
-		// must contain a bank with property account with property transfer
-		// is it possible to use json-ld or rdf-a to describe that embedded in bankingResource?
-		// must read this after reading the index and build the rel path
-		// to the target resource /transfer
-		// use Jena for this?
-
-		// // some definitions
-		// static String personURI = "http://somewhere/JohnSmith";
-		// static String fullName = "John Smith";
-		//
-		// // create an empty Model
-		// Model model = ModelFactory.createDefaultModel();
-		//
-		// // create the resource
-		// Resource johnSmith = model.createResource(personURI);
-		//
-		// // add the property
-		// johnSmith.addProperty(VCARD.FN, fullName);
 
 		// create an empty Model
 		Model model = ModelFactory.createDefaultModel();
@@ -91,10 +78,13 @@ public class BankingController {
 
 		// bank is a class, having a property 'account'
 		model.add(bank, RDF.type, RDFS.Class);
+
+		model.add(account, RDF.type, RDFS.Class);
 		model.add(account, RDF.type, RDF.Property);
 		model.add(account, RDFS.domain, bank);
 
-		model.add(account, RDF.type, RDFS.Class);
+		model.add(transfer, RDF.type, RDFS.Class);
+		model.add(transfer, RDF.type, RDF.Property);
 		model.add(transfer, RDFS.domain, account);
 
 		// TODO how to navigate/query the model
@@ -122,14 +112,15 @@ public class BankingController {
 
 		resource.add(new Link("http://localhost:8080/banking/ns/account", "describedBy"));
 		resource.add(linkToMethod(on(BankingController.class).moneyTransferForm(account.getNumber())).withRel(
-				"http://localhost:8080/banking/ns/moneytransfer"));
+				"http://localhost:8080/banking/ns/transfer"));
 		return new HttpEntity<AccountResource>(resource);
 	}
 
 	@RequestMapping("/account/{accountNumber}/transfer")
 	public HttpEntity<FormDescriptor> moneyTransferForm(@PathVariable String accountNumber) {
 
-		FormDescriptor form = createForm("moneyTransfer", on(BankingController.class).moneyTransfer(accountNumber, null, null));
+		FormDescriptor form = createForm("moneyTransferForm",
+				on(BankingController.class).moneyTransfer(accountNumber, null, null));
 		return new HttpEntity<FormDescriptor>(form);
 	}
 
@@ -146,7 +137,7 @@ public class BankingController {
 			MoneyTransferResourceAssembler assembler = new MoneyTransferResourceAssembler();
 			MoneyTransferResource resource = assembler.toResource(moneyTransfer);
 
-			resource.add(new Link("http://example.com/ns/transfer", "describedBy"));
+			resource.add(new Link("http://localhost:8080/banking/ns/transfer", "describedBy"));
 
 			HttpHeaders headers = new HttpHeaders();
 			headers.setLocation(new URI(resource.getId().getHref()));

@@ -18,7 +18,8 @@ import org.springframework.hateoas.client.Browsable;
 import org.springframework.hateoas.client.Browser;
 import org.springframework.hateoas.client.FormRequest;
 import org.springframework.hateoas.client.Identifier;
-import org.springframework.hateoas.client.Inventory;
+import org.springframework.hateoas.client.Agent;
+import org.springframework.hateoas.client.SubmitFormAction;
 import org.springframework.hateoas.util.Args;
 import org.springframework.hateoas.util.Failure;
 import org.springframework.http.HttpMethod;
@@ -35,7 +36,9 @@ public class CommonsHttpClient4Browser implements Browser {
 
 	public CommonsHttpClient4Browser(URI entryPoint) {
 		super();
+		// TODO remove entryPoint for context?
 		this.entryPoint = entryPoint;
+		this.context = entryPoint;
 	}
 
 	public Browsable getCurrentResource() {
@@ -55,7 +58,7 @@ public class CommonsHttpClient4Browser implements Browser {
 
 	private HttpGet createGet(URI uri) {
 		HttpGet httpGet = new HttpGet(uri);
-		httpGet.addHeader("Accept", "text/html, application/json");
+		httpGet.addHeader("Accept", "text/html, application/rdf+xml, application/xml, application/json");
 		return httpGet;
 	}
 
@@ -129,34 +132,9 @@ public class CommonsHttpClient4Browser implements Browser {
 		}
 	}
 
-	public Browsable browseFor(Identifier identifier, Inventory inventory) {
-		List<Action> script = inventory.getScript();
-		Identifier currentIdentifier = identifier;
-		currentResource = getCurrentResource();
-		// for (Action action : script) {
-		Iterator<Action> actions = script.iterator();
-		Action currentAction = actions.next();
-		Browsable found = null;
-		while (found == null) {
-			if (currentIdentifier.foundIn(currentResource)) {
-				currentIdentifier = currentIdentifier.getContainedIdentifier();
-				if (currentIdentifier == null) {
-					// no identifiers left, we have a match
-					found = currentResource;
-					break;
-				}
-			} else {
-				// TODO only if the current action is possible on the current resource
-				// otherwise start sensing
-				// TODO the rels to use might be embedded within collection items
-				currentResource = currentAction.execute(currentResource, this);
-				if (actions.hasNext())
-					currentAction = actions.next();
-				else 
-					currentAction = null;
-			}
-		}
-		return found;
+
+	public URI getCurrentContext() {
+		return context;
 	}
 
 }

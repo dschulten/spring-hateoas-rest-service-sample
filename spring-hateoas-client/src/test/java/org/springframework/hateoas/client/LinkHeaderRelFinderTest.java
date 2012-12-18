@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
+import org.springframework.util.MultiValueMap;
 
 public class LinkHeaderRelFinderTest {
 
@@ -29,10 +30,10 @@ public class LinkHeaderRelFinderTest {
 		headers.set("Link", headerValue);
 		LinkHeaderRelFinder linkHeaderRelFinder = new LinkHeaderRelFinder(headers);
 
-		Map<String, Link> relsFromLinkHeader = linkHeaderRelFinder.findRels();
+		MultiValueMap<String, Link> relsFromLinkHeader = linkHeaderRelFinder.findRels();
 
 		assertTrue("rel previous not found", relsFromLinkHeader.containsKey("previous"));
-		Link link = relsFromLinkHeader.get("previous");
+		Link link = relsFromLinkHeader.get("previous").get(0);
 		assertEquals("http://example.com/TheBook/chapter2", link.getHref());
 		assertEquals("previous", link.getRel());
 	}
@@ -47,10 +48,10 @@ public class LinkHeaderRelFinderTest {
 
 		LinkHeaderRelFinder linkHeaderRelFinder = new LinkHeaderRelFinder(headers);
 
-		Map<String, Link> relsFromLinkHeader = linkHeaderRelFinder.findRels();
+		MultiValueMap<String, Link> relsFromLinkHeader = linkHeaderRelFinder.findRels();
 
 		assertTrue("rel " + extensionRel + " not found", relsFromLinkHeader.containsKey(extensionRel));
-		Link link = relsFromLinkHeader.get(extensionRel);
+		Link link = relsFromLinkHeader.get(extensionRel).get(0);
 		assertEquals("/", link.getHref());
 		assertEquals(extensionRel, link.getRel());
 
@@ -67,15 +68,15 @@ public class LinkHeaderRelFinderTest {
 		headers.set("Link", multiLink);
 		LinkHeaderRelFinder linkHeaderRelFinder = new LinkHeaderRelFinder(headers);
 
-		Map<String, Link> relsFromLinkHeader = linkHeaderRelFinder.findRels();
+		MultiValueMap<String, Link> relsFromLinkHeader = linkHeaderRelFinder.findRels();
 
 		assertTrue("rel " + previousRel + " not found", relsFromLinkHeader.containsKey(previousRel));
-		Link linkPrevious = relsFromLinkHeader.get(previousRel);
+		Link linkPrevious = relsFromLinkHeader.get(previousRel).get(0);
 		assertEquals("/TheBook/chapter2", linkPrevious.getHref());
 		assertEquals(previousRel, linkPrevious.getRel());
 
 		assertTrue("rel " + nextRel + " not found", relsFromLinkHeader.containsKey(nextRel));
-		Link linkNext = relsFromLinkHeader.get(nextRel);
+		Link linkNext = relsFromLinkHeader.get(nextRel).get(0);
 		assertEquals("/TheBook/chapter4", linkNext.getHref());
 		assertEquals(nextRel, linkNext.getRel());
 

@@ -1,10 +1,11 @@
 package org.springframework.hateoas.client;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 
 import org.codehaus.jackson.JsonNode;
 import org.springframework.hateoas.Link;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 public class JsonRelFinder implements RelFinder {
 
@@ -15,18 +16,22 @@ public class JsonRelFinder implements RelFinder {
 		this.json = json;
 	}
 
-	public Map<String, Link> findRels() {
-		Map<String, Link> ret = new LinkedHashMap<String, Link>();
+	public MultiValueMap<String, Link> findRels() {
+		MultiValueMap<String, Link> ret = new LinkedMultiValueMap<String, Link>();
+		addRelsToResult(ret, json.findValues("links"));
+		return ret;
+	}
 
-		JsonNode jsonLinks = json.findValue("links");
-		if (jsonLinks != null && jsonLinks.isArray()) {
-			for (JsonNode jsonLink : jsonLinks) {
-				String rel = jsonLink.get("rel").getTextValue();
-				Link link = new Link(jsonLink.get("href").getTextValue(), rel);
-				ret.put(rel, link);
+	private void addRelsToResult(MultiValueMap<String, Link> resultMap, List<JsonNode> jsonLinksList) {
+		for (JsonNode jsonLinks : jsonLinksList) {
+			if (jsonLinks != null && jsonLinks.isArray()) {
+				for (JsonNode jsonLink : jsonLinks) {
+					String rel = jsonLink.get("rel").getTextValue();
+					Link link = new Link(jsonLink.get("href").getTextValue(), rel);
+					resultMap.add(rel, link);
+				}
 			}
 		}
-		return ret;
 	}
 
 }

@@ -36,5 +36,9 @@
       <artifactId>jackson-mapper-asl</artifactId>
       <version>1.9.7</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-core</artifactId>
+    </dependency>
   </dependencies>
 </project>

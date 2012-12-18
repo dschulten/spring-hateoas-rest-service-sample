@@ -8,6 +8,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
 public class LinkHeaderRelFinder implements RelFinder {
@@ -22,9 +24,9 @@ public class LinkHeaderRelFinder implements RelFinder {
 		this.headers = headers;
 	}
 
-	public Map<String, Link> findRels() {
+	public MultiValueMap<String, Link> findRels() {
 
-		Map<String, Link> ret = new HashMap<String, Link>();
+		MultiValueMap<String, Link> ret = new LinkedMultiValueMap<String, Link>();
 
 		List<String> linkHeaders = headers.get(HEADER_LINK);
 		if (linkHeaders == null)
@@ -50,10 +52,10 @@ public class LinkHeaderRelFinder implements RelFinder {
 				}
 				String rel = linkParams.get("rel");
 				Link link = new Link(uriReference, rel);
-				Link replaced = ret.put(rel, link);
-				if (replaced != null) {
-					LOG.warn("found duplicate rel " + rel + ", replacing " + replaced + " by " + link);
-				}
+				ret.add(rel, link);
+//				if (replaced != null) {
+//					LOG.warn("found duplicate rel " + rel + ", replacing " + replaced + " by " + link);
+//				}
 			}
 		}
 		if (uriReference == null)

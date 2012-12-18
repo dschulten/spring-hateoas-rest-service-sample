@@ -1,11 +1,11 @@
 package org.springframework.hateoas.client;
 
-import java.util.Map;
 
 import org.springframework.hateoas.Link;
+import org.springframework.util.MultiValueMap;
 
 public interface RelFinder {
 
-	Map<String, Link> findRels();
+	MultiValueMap<String, Link> findRels();
 
 }

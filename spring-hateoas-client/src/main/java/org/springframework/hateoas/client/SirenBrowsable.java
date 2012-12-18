@@ -29,7 +29,7 @@ public class SirenBrowsable implements Browsable {
 		return null;
 	}
 
-	public Map<String, Link> getRels() {
+	public Map<String, List<Link>> getRels() {
 		// TODO Auto-generated method stub
 		return null;
 	}

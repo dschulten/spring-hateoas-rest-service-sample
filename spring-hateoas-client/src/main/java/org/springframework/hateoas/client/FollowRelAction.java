@@ -1,6 +1,5 @@
 package org.springframework.hateoas.client;
 
-
 public class FollowRelAction implements Action {
 
 	private String rel;
@@ -10,9 +9,13 @@ public class FollowRelAction implements Action {
 		this.rel = rel;
 	}
 
-	public Browsable execute(Browsable browsable, Browser browser) {
+	public Browsable execute(Browser browser) {
 		browser.followRel(rel);
 		return browser.getCurrentResource();
+	}
+
+	public boolean possibleOn(Browsable currentResource) {
+		return currentResource.getRel(rel) != null;
 	}
 
 }

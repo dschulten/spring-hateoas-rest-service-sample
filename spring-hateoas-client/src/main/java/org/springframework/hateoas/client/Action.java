@@ -2,6 +2,8 @@ package org.springframework.hateoas.client;
 
 public interface Action {
 
-	Browsable execute(Browsable browsable, Browser browser);
+	Browsable execute(Browser browser);
+
+	boolean possibleOn(Browsable currentResource);
 
 }

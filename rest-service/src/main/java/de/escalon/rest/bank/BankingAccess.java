@@ -12,4 +12,8 @@ public class BankingAccess {
 		return banking;
 	}
 
+	public Banking getBankingByBlz(String blz) {
+		return getBanking();
+	}
+
 }

@@ -29,7 +29,7 @@
   </bean>
 
   <bean id="rdfConverter"
-    class="org.springframework.hateoas.rdf.JenaRdfMessageConverter">
+    class="org.springframework.hateoas.rdf.RdfJenaMessageConverter">
     <property name="supportedMediaTypes">
       <list>
         <value>application/rdf+xml</value>

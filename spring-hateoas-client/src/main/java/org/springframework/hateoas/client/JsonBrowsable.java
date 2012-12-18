@@ -2,7 +2,6 @@ package org.springframework.hateoas.client;
 
 import java.io.InputStream;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +11,12 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.util.Failure;
 import org.springframework.http.HttpHeaders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 public class JsonBrowsable implements Browsable {
 
-	Map<String, Link> rels = new LinkedHashMap<String, Link>();
+	MultiValueMap<String, Link> rels = new LinkedMultiValueMap<String, Link>();
 	private JsonNode json;
 
 	public void process(InputStream content, HttpHeaders httpHeaders) {
@@ -34,11 +35,20 @@ public class JsonBrowsable implements Browsable {
 	}
 
 	public FormRequest getFormRequest(String formName, Map<String, List<? extends Object>> args) {
-		return null;
+		throw new UnsupportedOperationException("forms support not implemented for generic json");
 	}
 
 	public Link getRel(String rel) {
-		return rels.get(rel);
+		List<Link> list = rels.get(rel);
+		final Link ret;
+		if (list == null) {
+			ret = null;
+		} else if (list.size() == 1) {
+			ret = list.get(0);
+		} else {
+			throw new IllegalStateException("multiple rels found");
+		}
+		return ret;
 	}
 
 	public Object getParsedContent() {
@@ -49,9 +59,10 @@ public class JsonBrowsable implements Browsable {
 		return json.toString();
 	}
 
-	public Map<String, Link> getRels() {
+	public Map<String, List<Link>> getRels() {
 		return rels;
 	}
+	
 
 	public List<String> getForms() {
 		return Collections.emptyList();

@@ -1,7 +1,9 @@
 package org.springframework.hateoas.client;
 
-import org.springframework.hateoas.Link;
+import java.util.List;
+import java.util.Map;
 
+import org.springframework.hateoas.Link;
 
 public class DescribedByIdentifier implements Identifier {
 	Link descriptor;
@@ -20,11 +22,18 @@ public class DescribedByIdentifier implements Identifier {
 	}
 
 	public boolean foundIn(Browsable browsable) {
-		final boolean ret;
-		if (this.descriptor.equals(browsable.getRel("describedBy"))) {
-			ret = true;
-		} else {
-			ret = false;
+		Map<String, List<Link>> rels = browsable.getRels();
+
+		List<Link> describedByRels = rels.get("describedBy");
+		// find
+		boolean ret = false;
+		if (describedByRels != null) {
+			for (Link link : describedByRels) {
+				if (this.descriptor.equals(link)) {
+					ret = true;
+					break;
+				}
+			}
 		}
 		return ret;
 	}
@@ -34,8 +43,6 @@ public class DescribedByIdentifier implements Identifier {
 		identifier.setContainedIdentifier(this);
 		return identifier;
 	}
-
-
 
 	public void setContainedIdentifier(Identifier identifier) {
 		this.containedIdentifier = identifier;
@@ -48,8 +55,8 @@ public class DescribedByIdentifier implements Identifier {
 
 	@Override
 	public String toString() {
-		return "DescribedByIdentifier [descriptor=" + descriptor + "]";
+		String href = descriptor.getHref();
+		return "DescribedByIdentifier [name=" + href.substring(href.lastIndexOf("/") + 1) + " href=" + href + "]";
 	}
-
 
 }

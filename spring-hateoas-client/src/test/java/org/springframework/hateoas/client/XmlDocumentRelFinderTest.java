@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import static org.springframework.hateoas.client.XHtmlBrowsableTest.BACK_REL;
 
@@ -33,9 +34,9 @@ public class XmlDocumentRelFinderTest {
 	@Test
 	public void testFindRels() throws Exception {
 		XmlDocumentRelFinder xmlDocumentRelFinder = new XmlDocumentRelFinder(document);
-		Map<String, Link> relsFromDocument = xmlDocumentRelFinder.findRels();
+		Map<String, List<Link>> relsFromDocument = xmlDocumentRelFinder.findRels();
 		assertTrue(relsFromDocument.containsKey(BACK_REL));
-		Link link = relsFromDocument.get(BACK_REL);
+		Link link = relsFromDocument.get(BACK_REL).get(0);
 		assertEquals("/", link.getHref());
 		assertEquals(BACK_REL, link.getRel());
 	}

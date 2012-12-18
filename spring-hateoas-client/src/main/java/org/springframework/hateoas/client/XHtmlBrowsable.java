@@ -31,7 +31,7 @@ import org.w3c.dom.ls.LSSerializer;
 public class XHtmlBrowsable implements Browsable {
 
 	private Document document;
-	private Map<String, Link> rels = new HashMap<String, Link>();
+	private MultiValueMap<String, Link> rels = new LinkedMultiValueMap<String, Link>();
 
 	public void process(InputStream content, HttpHeaders headers) {
 		try {
@@ -56,8 +56,16 @@ public class XHtmlBrowsable implements Browsable {
 	}
 
 	public Link getRel(String rel) {
-		return rels.get(rel);
-
+		List<Link> list = rels.get(rel);
+		final Link ret;
+		if (list == null) {
+			ret = null;
+		} else if (list.size() == 1) {
+			ret = list.get(0);
+		} else {
+			throw new IllegalStateException("multiple rels found");
+		}
+		return ret;
 	}
 
 	public FormRequest getFormRequest(String formName, Map<String, List<? extends Object>> args) {
@@ -157,7 +165,7 @@ public class XHtmlBrowsable implements Browsable {
 		return document;
 	}
 
-	public Map<String, Link> getRels() {
+	public Map<String, List<Link>> getRels() {
 		return rels;
 	}
 

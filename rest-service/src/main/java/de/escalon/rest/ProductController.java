@@ -28,6 +28,9 @@ public class ProductController {
 
 		ProductResourceAssembler assembler = new ProductResourceAssembler();
 		List<ProductResource> resources = assembler.toResources(products);
+		for (ProductResource productResource : resources) {
+			//productResource.add(new Link("http://example.com/doc#product", "describedBy"));
+		}
 		// Resources allows to add links once for the entire list
 		// provides the list as content attribute
 		Resources<ProductResource> wrapped = new Resources<ProductResource>(resources, linkToMethod(

@@ -7,22 +7,23 @@ import org.springframework.hateoas.util.Failure;
 
 public class BrowsableRegistry {
 
-	Map<String, Class<? extends Browsable>> navigators = new HashMap<String, Class<? extends Browsable>>();
+	Map<String, Class<? extends Browsable>> browsables = new HashMap<String, Class<? extends Browsable>>();
 
 	public BrowsableRegistry() {
 		super();
-		this.navigators.put("text/html", XHtmlBrowsable.class);
-		this.navigators.put("application/json", JsonBrowsable.class);
+		this.browsables.put("text/html", XHtmlBrowsable.class);
+		this.browsables.put("application/json", JsonBrowsable.class);
+		this.browsables.put("application/rdf+xml", RdfBrowsable.class);
 	}
 
 	public Browsable getBrowsable(String mimeType) {
 		try {
-			Class<? extends Browsable> navigatorClass = navigators.get(mimeType);
+			Class<? extends Browsable> browsableClass = browsables.get(mimeType);
 
-			if (navigatorClass == null)
+			if (browsableClass == null)
 				throw new IllegalStateException("no Browsable class defined for " + mimeType);
 
-			return navigatorClass.newInstance();
+			return browsableClass.newInstance();
 		} catch (Exception e) {
 			throw Failure.asUnchecked(e);
 		}
@@ -30,6 +31,6 @@ public class BrowsableRegistry {
 	}
 
 	void addNavigator(String mimeType, Class<? extends Browsable> navigatorClass) {
-		navigators.put(mimeType, navigatorClass);
+		browsables.put(mimeType, navigatorClass);
 	}
 }

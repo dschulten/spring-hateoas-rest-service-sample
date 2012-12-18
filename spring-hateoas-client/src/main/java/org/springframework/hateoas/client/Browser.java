@@ -1,5 +1,7 @@
 package org.springframework.hateoas.client;
 
+import java.net.URI;
+
 import org.springframework.hateoas.util.Args;
 
 public interface Browser {
@@ -21,6 +23,9 @@ public interface Browser {
 
 	public Browsable getCurrentResource();
 
-	public Browsable browseFor(Identifier identifier, Inventory inventory);
+//	public Browsable browseFor(Agent inventory);
+
+	public URI getCurrentContext();
+	
 
 }

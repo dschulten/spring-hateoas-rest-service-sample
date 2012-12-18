@@ -11,7 +11,7 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
-public class JenaRdfMessageConverter extends AbstractHttpMessageConverter<Model> {
+public class RdfJenaMessageConverter extends AbstractHttpMessageConverter<Model> {
 
 	private String lang = "RDF/XML-ABBREV";
 
