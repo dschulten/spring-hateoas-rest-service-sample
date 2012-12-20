@@ -1,8 +1,8 @@
 package de.escalon.rest.bank;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.createForm;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkToMethod;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.on;
+import static org.springframework.hateoas.mvc.ControllerFormBuilder.createForm;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.math.BigInteger;
 import java.net.URI;
@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.FormDescriptor;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.mvc.ControllerFormBuilder;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -44,7 +45,7 @@ public class BankingController {
 		Banking banking = bankingAccess.getBanking();
 		BankingResource resource = assembler.toResource(banking);
 		resource.add(new Link("http://localhost:8080/banking/ns/bank", "describedBy"));
-		resource.add(ControllerLinkBuilder.linkToMethod(on(BankingController.class).bankAccountForm()).withRel(
+		resource.add(ControllerLinkBuilder.linkTo(methodOn(BankingController.class).bankAccountForm()).withRel(
 				"http://localhost:8080/banking/ns/account"));
 		return new HttpEntity<BankingResource>(resource);
 	}
@@ -55,7 +56,7 @@ public class BankingController {
 		Banking banking = bankingAccess.getBankingByBlz(blz);
 		BankingResource resource = assembler.toResource(banking);
 		resource.add(new Link("http://localhost:8080/banking/ns/bank", "describedBy"));
-		resource.add(ControllerLinkBuilder.linkToMethod(on(BankingController.class).bankAccountForm()).withRel(
+		resource.add(ControllerLinkBuilder.linkTo(methodOn(BankingController.class).bankAccountForm()).withRel(
 				"http://localhost:8080/banking/ns/account"));
 		return new HttpEntity<BankingResource>(resource);
 	}
@@ -87,18 +88,13 @@ public class BankingController {
 		model.add(transfer, RDF.type, RDF.Property);
 		model.add(transfer, RDFS.domain, account);
 
-		// TODO how to navigate/query the model
-		// and how to describe the goal for the client
-		// goal is the transfer, that much is clear
-		// can I create a path of rels to the goal from the model?
-
 		return new HttpEntity<Model>(model);
 	}
 
 	@RequestMapping(value = { "/account" }, method = RequestMethod.GET)
 	public HttpEntity<FormDescriptor> bankAccountForm() {
-		FormDescriptor form = ControllerLinkBuilder.createForm("bankAccountForm",
-				on(BankingController.class).bankAccount(null));
+		FormDescriptor form = ControllerFormBuilder.createForm("bankAccountForm",
+				methodOn(BankingController.class).bankAccount(null));
 		return new HttpEntity<FormDescriptor>(form);
 	}
 
@@ -111,7 +107,7 @@ public class BankingController {
 		AccountResource resource = assembler.toResource(account);
 
 		resource.add(new Link("http://localhost:8080/banking/ns/account", "describedBy"));
-		resource.add(linkToMethod(on(BankingController.class).moneyTransferForm(account.getNumber())).withRel(
+		resource.add(linkTo(methodOn(BankingController.class).moneyTransferForm(account.getNumber())).withRel(
 				"http://localhost:8080/banking/ns/transfer"));
 		return new HttpEntity<AccountResource>(resource);
 	}
@@ -120,7 +116,7 @@ public class BankingController {
 	public HttpEntity<FormDescriptor> moneyTransferForm(@PathVariable String accountNumber) {
 
 		FormDescriptor form = createForm("moneyTransferForm",
-				on(BankingController.class).moneyTransfer(accountNumber, null, null));
+				methodOn(BankingController.class).moneyTransfer(accountNumber, null, null));
 		return new HttpEntity<FormDescriptor>(form);
 	}
 

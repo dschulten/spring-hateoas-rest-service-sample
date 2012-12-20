@@ -1,8 +1,7 @@
 package de.escalon.rest;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkToMethod;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.on;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.util.List;
 
@@ -29,12 +28,12 @@ public class ProductController {
 		ProductResourceAssembler assembler = new ProductResourceAssembler();
 		List<ProductResource> resources = assembler.toResources(products);
 		for (ProductResource productResource : resources) {
-			//productResource.add(new Link("http://example.com/doc#product", "describedBy"));
+			 productResource.add(new Link("http://example.com/doc#product", "describedBy"));
 		}
 		// Resources allows to add links once for the entire list
 		// provides the list as content attribute
-		Resources<ProductResource> wrapped = new Resources<ProductResource>(resources, linkToMethod(
-				on(ProductController.class).getProductsOfPerson(personId)).withSelfRel());
+		Resources<ProductResource> wrapped = new Resources<ProductResource>(resources, linkTo(
+				methodOn(ProductController.class).getProductsOfPerson(personId)).withSelfRel());
 		Link describedBy = new Link("http://example.com/doc#products", "describedBy");
 		wrapped.add(describedBy);
 		return new HttpEntity<Resources<ProductResource>>(wrapped);

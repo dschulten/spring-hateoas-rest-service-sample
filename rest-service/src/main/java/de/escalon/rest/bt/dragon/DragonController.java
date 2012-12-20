@@ -1,8 +1,8 @@
 package de.escalon.rest.bt.dragon;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkToMethod;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.createForm;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.on;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerFormBuilder.createForm;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.FormDescriptor;
@@ -25,7 +25,7 @@ public class DragonController {
 	@RequestMapping("/entry")
 	public HttpEntity<FormDescriptor> start() {
 		return new HttpEntity<FormDescriptor>(createForm("dragonName",
-				on(DragonController.class).livingdragon(null, null)));
+				methodOn(DragonController.class).livingdragon(null, null)));
 	}
 
 	@ResponseStatus(value = HttpStatus.CREATED)
@@ -37,8 +37,8 @@ public class DragonController {
 		DragonResource dragonResource = assembler.toResource(dragon);
 		// clients should follow all concurrent links when they find them in a response
 		// either in the order of occurrence or truly concurrently, with two browsers
-		dragonResource.add(linkToMethod(on(DragonController.class).guardTreasure(id)).withRel("concurrent"));
-		dragonResource.add(linkToMethod(on(DragonController.class).robMoreTreasures(id)).withRel("concurrent"));
+		dragonResource.add(linkTo(methodOn(DragonController.class).guardTreasure(id)).withRel("concurrent"));
+		dragonResource.add(linkTo(methodOn(DragonController.class).robMoreTreasures(id)).withRel("concurrent"));
 		return new HttpEntity<DragonResource>(dragonResource);
 	}
 
@@ -47,7 +47,7 @@ public class DragonController {
 		Dragon dragon = dragonAccess.readDragon(id);
 		DragonResourceAssembler assembler = new DragonResourceAssembler();
 		DragonResource dragonResource = assembler.toResource(dragon);
-		dragonResource.add(linkToMethod(on(DragonController.class).isThiefNearTreasureCondition(id)).withRel("condition"));
+		dragonResource.add(linkTo(methodOn(DragonController.class).isThiefNearTreasureCondition(id)).withRel("condition"));
 		return new HttpEntity<DragonResource>(dragonResource);
 
 	}
@@ -60,9 +60,9 @@ public class DragonController {
 		// if dragon is at home and thief nearby home
 		if (dragon.getHomeLocation().equals(dragon.getLocation())
 				&& dragon.getHomeLocation().equals(thiefAccess.getThiefLocation())) {
-			dragonResource.add(linkToMethod(on(DragonController.class).eatThiefAction(id)).withRel("action"));
+			dragonResource.add(linkTo(methodOn(DragonController.class).eatThiefAction(id)).withRel("action"));
 		} else {
-			// TODO how do I express that I can't eat a thief now
+			// TODO how do I express that dragon can't eat a thief now
 			// what is the equivalent of a failure in http?
 			// a back rel in the response would require the callee too know where the caller was
 			// this will not work, or I get no reusable behavior subtrees.
@@ -92,7 +92,7 @@ public class DragonController {
 			// how does the client know what to do on such a page? If it is a form with input type select items, it could
 			// understand. Somehow the client must be able to recognize that some rel is the path to its goal,
 			// and it must understand when its goal is reached.
-			dragonResource.add(linkToMethod(on(DragonController.class).eatThiefAction(id)).withRel("failure"));
+			dragonResource.add(linkTo(methodOn(DragonController.class).eatThiefAction(id)).withRel("failure"));
 		}
 		return new HttpEntity<DragonResource>(dragonResource);
 	}
@@ -104,7 +104,7 @@ public class DragonController {
 		DragonResource dragonResource = assembler.toResource(dragon);
 		// if dragon is at home and thief nearby home
 		if (dragon.getHomeLocation().equals(dragon.getLocation())) {
-			dragonResource.add(linkToMethod(on(DragonController.class).eatThiefAction(id)).withRel("action"));
+			dragonResource.add(linkTo(methodOn(DragonController.class).eatThiefAction(id)).withRel("action"));
 		} else {
 			throw new BehaviorFailedException("not at home");
 		}

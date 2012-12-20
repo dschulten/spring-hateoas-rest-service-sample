@@ -1,8 +1,7 @@
 package de.escalon.rest;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkToMethod;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.on;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +22,7 @@ public class IndexController {
 		List<Link> links = new ArrayList<Link>();
 		links.add(linkTo(IndexController.class).withSelfRel());
 		links.add(linkTo(PersonController.class).withRel("people"));
-		links.add(linkToMethod(on(PersonController.class).searchPersonForm()).withRel("search"));
-		// TODO form name should be defined here?
+		links.add(linkTo(methodOn(PersonController.class).searchPersonForm()).withRel("search"));
 
 		model.put("links", links); // referenced by ${links} in the jsp
 		return "home";
@@ -34,12 +32,12 @@ public class IndexController {
 	public HttpEntity<List<Link>> showLinks() {
 		List<Link> links = new ArrayList<Link>();
 		Link people = linkTo(PersonController.class).withRel("people");
-		Link person = linkToMethod(on(PersonController.class).show(1L)).withRel("person");
+		Link person = linkTo(methodOn(PersonController.class).show(1L)).withRel("person");
 		Link products = linkTo(ProductController.class).withRel("products");
 		Link personProducts = linkTo(PersonProductController.class, 1L).withRel("personProducts");
-		Link personResources = linkToMethod(on(PersonController.class).showAllAsResources()).withRel("peopleAsResources");
-		Link pagedResources = linkToMethod(on(PersonController.class).showAllPaged()).withRel("peoplePaged");
-		Link search = linkToMethod(on(PersonController.class).searchPersonForm()).withRel("search");
+		Link personResources = linkTo(methodOn(PersonController.class).showAllAsResources()).withRel("peopleAsResources");
+		Link pagedResources = linkTo(methodOn(PersonController.class).showAllPaged()).withRel("peoplePaged");
+		Link search = linkTo(methodOn(PersonController.class).searchPersonForm()).withRel("search");
 
 		links.add(search);
 		links.add(people);

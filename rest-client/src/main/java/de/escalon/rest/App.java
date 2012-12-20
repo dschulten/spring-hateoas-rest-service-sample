@@ -136,12 +136,6 @@ public class App {
 
 		// enable client to submit forms
 		// TODO: look into schema.org actions to see if they say something about required data for an action.
-		// TODO: we need a more abstract way to enable the agent to send data. We must be able to tell it
-		// "transfer amount 300 from account A to account B"), which enables the client when to send what.
-		// "transfer, give account no A when asked for 'accountNumber', give amount x when asked for 'amount', and account
-		// no B when asked for 'to'" However, the form names could be used to restrict when to give this information - so
-		// maybe they are not so bad after all. Maybe RDFa to the rescue - a form could be identified as a resource, not by
-		// its form name?
 		agent.addSubmitFormAction(new SubmitFormAction("bankAccountForm", Args.of("accountNumber", fromAccount)));
 		agent.addSubmitFormAction(new SubmitFormAction("moneyTransferForm", Args.of("amount", amount, "to", toAccount)));
 

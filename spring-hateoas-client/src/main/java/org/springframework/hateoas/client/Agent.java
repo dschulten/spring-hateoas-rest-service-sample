@@ -108,15 +108,8 @@ public class Agent {
 			// add goal rel as last action
 			this.addFollowRelAction(new FollowRelAction(goal.getURI()));
 
-			// TODO must get rid of the fixed sequence of actions for forms
-			// rather be able to answer certain data requests
-			// need an inventory of actions to try on a resource
-			// two approaches: have an rdf with full resource description and client has a single
-			// resource as its goal
-			// or the client has context knowledge: goal is transfer within account within bank
 			// TODO: sensing: if the client has only partial knowledge about all necessary steps,
-			// rdf provides the bridge to the next known context element
-			// TODO: idea for proof of concept: from finding an item in a list to using a form
+			// rdf could provide the bridge to the next known context element
 		} else {
 			throw new IllegalArgumentException("resource does not contain an rdf model");
 		}
@@ -134,7 +127,6 @@ public class Agent {
 		Action currentAction = actions.next();
 		Browsable found = null;
 		while (found == null) {
-			// TODO exit condition if not found (remove #product links from ProductController to trigger endless loop)
 			if (currentIdentifier.foundIn(currentResource)) {
 				// next identifier
 				currentIdentifier = currentIdentifier.getContainedIdentifier();
@@ -144,7 +136,6 @@ public class Agent {
 					break;
 				}
 			} else {
-				// TODO the rels to use might be embedded within collection items
 				if (currentAction != null && currentAction.possibleOn(currentResource)) {
 					currentResource = currentAction.execute(browser);
 					if (actions.hasNext())
@@ -158,7 +149,7 @@ public class Agent {
 						currentResource = submit.execute(browser);
 					} else {
 						// TODO: "sensing"
-						throw new GoalNotFoundException("failed to reach goal");
+						throw new GoalNotFoundException("failed to reach goal " + currentIdentifier);
 					}
 				}
 			}

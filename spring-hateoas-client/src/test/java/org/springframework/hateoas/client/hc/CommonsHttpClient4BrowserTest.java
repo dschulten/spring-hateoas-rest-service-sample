@@ -57,9 +57,6 @@ public class CommonsHttpClient4BrowserTest {
 		when(searchForm.getFormRequest(Mockito.eq("people"), Mockito.<Args> any())).thenReturn(
 				new FormRequest(HttpMethod.GET, new LinkedMultiValueMap<String, String>(), new URI("/"), "", "UTF-8"));
 
-		// TODO here I need a way of checking if I have what I am looking for,
-		// not just browsing
-		//
 		browser.followRel("search").submitForm("people", Args.of("customerId", 1));
 
 		Browsable currentResource = browser.getCurrentResource();

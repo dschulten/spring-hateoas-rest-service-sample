@@ -1,18 +1,17 @@
 package de.escalon.rest;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkToMethod;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.on;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.FormDescriptor;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.PagedResources.PageMetadata;
-import org.springframework.hateoas.FormDescriptor;
 import org.springframework.hateoas.Resources;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.hateoas.mvc.ControllerFormBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,13 +70,13 @@ public class PersonController {
 		PersonResource resource = assembler.toResource(person);
 		Link describedBy = new Link("http://example.com/doc#customer", "describedBy");
 		resource.add(describedBy);
-		resource.add(linkToMethod(on(ProductController.class).getProductsOfPerson(id)).withRel("products"));
+		resource.add(linkTo(methodOn(ProductController.class).getProductsOfPerson(id)).withRel("products"));
 		return new HttpEntity<PersonResource>(resource);
 	}
 
 	@RequestMapping(value = "/customer", method = RequestMethod.GET)
 	public HttpEntity<FormDescriptor> searchPersonForm() {
-		FormDescriptor form = ControllerLinkBuilder.createForm("searchPerson", on(PersonController.class).showPerson(null));
+		FormDescriptor form = ControllerFormBuilder.createForm("searchPerson", methodOn(PersonController.class).showPerson(1L));
 		return new HttpEntity<FormDescriptor>(form);
 	}
 
@@ -91,7 +90,7 @@ public class PersonController {
 		resource.add(describedBy);
 
 		// variant 1: products are separate
-		resource.add(linkToMethod(on(ProductController.class).getProductsOfPerson(personId)).withRel("products"));
+		resource.add(linkTo(methodOn(ProductController.class).getProductsOfPerson(personId)).withRel("products"));
 
 		// variant 2: products are embedded in customer
 		// Iterable<? extends Product> products = productAccess.getProductsOfPerson(personId);

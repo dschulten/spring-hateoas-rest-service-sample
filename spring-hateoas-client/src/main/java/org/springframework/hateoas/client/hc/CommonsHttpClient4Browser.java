@@ -2,8 +2,6 @@ package org.springframework.hateoas.client.hc;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Iterator;
-import java.util.List;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -13,13 +11,9 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.client.Action;
 import org.springframework.hateoas.client.Browsable;
 import org.springframework.hateoas.client.Browser;
 import org.springframework.hateoas.client.FormRequest;
-import org.springframework.hateoas.client.Identifier;
-import org.springframework.hateoas.client.Agent;
-import org.springframework.hateoas.client.SubmitFormAction;
 import org.springframework.hateoas.util.Args;
 import org.springframework.hateoas.util.Failure;
 import org.springframework.http.HttpMethod;
