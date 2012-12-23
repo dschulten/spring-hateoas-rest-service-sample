@@ -6,11 +6,11 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.FormDescriptor;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.PagedResources.PageMetadata;
 import org.springframework.hateoas.Resources;
+import org.springframework.hateoas.action.ActionDescriptor;
 import org.springframework.hateoas.mvc.ControllerFormBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
@@ -75,9 +75,9 @@ public class PersonController {
 	}
 
 	@RequestMapping(value = "/customer", method = RequestMethod.GET)
-	public HttpEntity<FormDescriptor> searchPersonForm() {
-		FormDescriptor form = ControllerFormBuilder.createForm("searchPerson", methodOn(PersonController.class).showPerson(1L));
-		return new HttpEntity<FormDescriptor>(form);
+	public HttpEntity<ActionDescriptor> searchPersonForm() {
+		ActionDescriptor form = ControllerFormBuilder.createForm("searchPerson", methodOn(PersonController.class).showPerson(1L));
+		return new HttpEntity<ActionDescriptor>(form);
 	}
 
 	@RequestMapping(value = "/customer", method = RequestMethod.GET, params = { "personId" })

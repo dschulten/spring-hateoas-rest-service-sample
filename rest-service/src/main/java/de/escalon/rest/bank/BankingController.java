@@ -9,8 +9,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.FormDescriptor;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.action.ActionDescriptor;
 import org.springframework.hateoas.mvc.ControllerFormBuilder;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpEntity;
@@ -92,10 +92,10 @@ public class BankingController {
 	}
 
 	@RequestMapping(value = { "/account" }, method = RequestMethod.GET)
-	public HttpEntity<FormDescriptor> bankAccountForm() {
-		FormDescriptor form = ControllerFormBuilder.createForm("bankAccountForm",
+	public HttpEntity<ActionDescriptor> bankAccountForm() {
+		ActionDescriptor form = ControllerFormBuilder.createForm("bankAccountForm",
 				methodOn(BankingController.class).bankAccount(null));
-		return new HttpEntity<FormDescriptor>(form);
+		return new HttpEntity<ActionDescriptor>(form);
 	}
 
 	@RequestMapping(value = { "/account" }, method = RequestMethod.GET, params = { "accountNumber" })
@@ -113,11 +113,11 @@ public class BankingController {
 	}
 
 	@RequestMapping("/account/{accountNumber}/transfer")
-	public HttpEntity<FormDescriptor> moneyTransferForm(@PathVariable String accountNumber) {
+	public HttpEntity<ActionDescriptor> moneyTransferForm(@PathVariable String accountNumber) {
 
-		FormDescriptor form = createForm("moneyTransferForm",
+		ActionDescriptor form = createForm("moneyTransferForm",
 				methodOn(BankingController.class).moneyTransfer(accountNumber, null, null));
-		return new HttpEntity<FormDescriptor>(form);
+		return new HttpEntity<ActionDescriptor>(form);
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)

@@ -30,7 +30,6 @@ public class CommonsHttpClient4Browser implements Browser {
 
 	public CommonsHttpClient4Browser(URI entryPoint) {
 		super();
-		// TODO remove entryPoint for context?
 		this.entryPoint = entryPoint;
 		this.context = entryPoint;
 	}

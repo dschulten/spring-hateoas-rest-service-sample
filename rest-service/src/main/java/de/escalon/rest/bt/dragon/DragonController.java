@@ -5,7 +5,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.FormDescriptor;
+import org.springframework.hateoas.action.ActionDescriptor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +23,8 @@ public class DragonController {
 	ThiefAccess thiefAccess;
 
 	@RequestMapping("/entry")
-	public HttpEntity<FormDescriptor> start() {
-		return new HttpEntity<FormDescriptor>(createForm("dragonName",
+	public HttpEntity<ActionDescriptor> start() {
+		return new HttpEntity<ActionDescriptor>(createForm("dragonName",
 				methodOn(DragonController.class).livingdragon(null, null)));
 	}
 

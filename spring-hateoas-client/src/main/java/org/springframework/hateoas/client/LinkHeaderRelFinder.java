@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.LinkedMultiValueMap;
@@ -15,7 +13,6 @@ import org.springframework.util.StringUtils;
 public class LinkHeaderRelFinder implements RelFinder {
 
 	private static final String HEADER_LINK = "Link";
-	private static Log LOG = LogFactory.getLog(LinkHeaderRelFinder.class);
 
 	private HttpHeaders headers;
 
@@ -42,7 +39,6 @@ public class LinkHeaderRelFinder implements RelFinder {
 			for (String linkValue : linkValues) {
 				String[] linkParts = StringUtils.tokenizeToStringArray(linkValue, "<>;", trimTokens, ignoreEmptyTokens);
 
-				// String[] linkParts = linkValue.split(";");
 				uriReference = linkParts[0];
 
 				// build link params

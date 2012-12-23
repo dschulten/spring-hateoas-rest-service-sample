@@ -29,8 +29,6 @@ public interface Browsable {
 	
 	FormRequest getFormRequest(String formName, Map<String, List<? extends Object>> args);
 
-	// TODO handle multi-rels properly: how can the caller decide which of multiple rels it should
-	// use? Multiple rels can occur on the same level or within collections.
 	
 	/**
 	 * Gets Link for rel, if the document contains exactly one rel.
