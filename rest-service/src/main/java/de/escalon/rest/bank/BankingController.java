@@ -1,6 +1,6 @@
 package de.escalon.rest.bank;
 
-import static org.springframework.hateoas.mvc.ControllerFormBuilder.createForm;
+import static org.springframework.hateoas.mvc.ControllerFormBuilder.createFormFor;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
@@ -93,8 +93,8 @@ public class BankingController {
 
 	@RequestMapping(value = { "/account" }, method = RequestMethod.GET)
 	public HttpEntity<ActionDescriptor> bankAccountForm() {
-		ActionDescriptor form = ControllerFormBuilder.createForm("bankAccountForm",
-				methodOn(BankingController.class).bankAccount(null));
+		ActionDescriptor form = ControllerFormBuilder.createFormFor(methodOn(BankingController.class).bankAccount(null),
+				"bankAccountForm");
 		return new HttpEntity<ActionDescriptor>(form);
 	}
 
@@ -115,8 +115,8 @@ public class BankingController {
 	@RequestMapping("/account/{accountNumber}/transfer")
 	public HttpEntity<ActionDescriptor> moneyTransferForm(@PathVariable String accountNumber) {
 
-		ActionDescriptor form = createForm("moneyTransferForm",
-				methodOn(BankingController.class).moneyTransfer(accountNumber, null, null));
+		ActionDescriptor form = createFormFor(methodOn(BankingController.class).moneyTransfer(accountNumber, null, null),
+				"moneyTransferForm");
 		return new HttpEntity<ActionDescriptor>(form);
 	}
 

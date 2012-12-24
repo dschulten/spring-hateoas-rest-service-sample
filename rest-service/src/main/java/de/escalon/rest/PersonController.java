@@ -76,7 +76,7 @@ public class PersonController {
 
 	@RequestMapping(value = "/customer", method = RequestMethod.GET)
 	public HttpEntity<ActionDescriptor> searchPersonForm() {
-		ActionDescriptor form = ControllerFormBuilder.createForm("searchPerson", methodOn(PersonController.class).showPerson(1L));
+		ActionDescriptor form = ControllerFormBuilder.createFormFor(methodOn(PersonController.class).showPerson(1L), "searchPerson");
 		return new HttpEntity<ActionDescriptor>(form);
 	}
 
