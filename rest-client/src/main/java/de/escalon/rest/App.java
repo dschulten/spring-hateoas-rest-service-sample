@@ -132,6 +132,8 @@ public class App {
 	private static void transferMoney(Browser browser, String fromAccount, String toAccount, BigInteger amount) throws GoalNotFoundException {
 		Agent agent = new Agent(browser);
 		// collect follow rel actions from describedBy URL
+		// for json-ld, would that be the context?
+		// could we construct schema.org actions for this?
 		agent.identifyGoal("http://localhost:8080/banking/ns/transfer", browser.getCurrentContext());
 
 		// enable client to submit forms
