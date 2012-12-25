@@ -11,7 +11,9 @@ import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.PagedResources.PageMetadata;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.action.ActionDescriptor;
+import org.springframework.hateoas.action.Hidden;
 import org.springframework.hateoas.mvc.ControllerFormBuilder;
+import org.springframework.hateoas.sample.SamplePersonController;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,7 +78,8 @@ public class PersonController {
 
 	@RequestMapping(value = "/customer", method = RequestMethod.GET)
 	public HttpEntity<ActionDescriptor> searchPersonForm() {
-		ActionDescriptor form = ControllerFormBuilder.createFormFor(methodOn(PersonController.class).showPerson(1L), "searchPerson");
+		ActionDescriptor form = ControllerFormBuilder.createFormFor(methodOn(PersonController.class).showPerson(1L),
+				"searchPerson");
 		return new HttpEntity<ActionDescriptor>(form);
 	}
 
@@ -102,6 +105,31 @@ public class PersonController {
 		// Resources<ProductResource> wrapped = new Resources<ProductResource>(prodResources, new Link(
 		// "http://example.com/doc#products", "describedBy"));
 		// resource.setProducts(wrapped);
+
+		return new HttpEntity<PersonResource>(resource);
+	}
+
+	@RequestMapping(value = "/customer/{personId}/edit")
+	public HttpEntity<ActionDescriptor> editPersonForm(@RequestParam Long personId) {
+
+		Person person = personAccess.getPerson(personId);
+
+		ActionDescriptor descriptor = ControllerFormBuilder.createFormFor(methodOn(SamplePersonController.class)
+				.editPerson(person.getId(), person.getFirstname(), person.getLastname()), "changePerson");
+
+		return new HttpEntity<ActionDescriptor>(descriptor);
+	}
+
+	@RequestMapping(value = "/customer", method = RequestMethod.PUT, params = { "personId", "firstname", "lastname" })
+	public HttpEntity<PersonResource> editPerson(@RequestParam @Hidden Long personId, @RequestParam String firstname,
+			@RequestParam String lastname) {
+
+		Person person = personAccess.getPerson(personId);
+
+		person.setFirstname(firstname);
+		person.setLastname(lastname);
+		PersonResourceAssembler assembler = new PersonResourceAssembler();
+		PersonResource resource = assembler.toResource(person);
 
 		return new HttpEntity<PersonResource>(resource);
 	}
