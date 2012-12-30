@@ -66,6 +66,7 @@ public class Agent {
 	 * @param currentContext to start from, must have a describedBy rel.
 	 */
 	public void identifyGoal(String goalUri, URI currentContext) {
+		// TODO support other representations, e.g. json-ld
 		Browser rdfBrowser = new CommonsHttpClient4Browser(currentContext);
 		rdfBrowser.followRel("describedBy");
 		Browsable rdfDescription = rdfBrowser.getCurrentResource();

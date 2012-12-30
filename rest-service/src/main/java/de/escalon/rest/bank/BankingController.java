@@ -1,6 +1,6 @@
 package de.escalon.rest.bank;
 
-import static org.springframework.hateoas.mvc.ControllerFormBuilder.createFormFor;
+import static org.springframework.hateoas.mvc.ControllerActionBuilder.createActionFor;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
@@ -11,7 +11,7 @@ import java.net.URISyntaxException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.action.ActionDescriptor;
-import org.springframework.hateoas.mvc.ControllerFormBuilder;
+import org.springframework.hateoas.mvc.ControllerActionBuilder;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -93,7 +93,7 @@ public class BankingController {
 
 	@RequestMapping(value = { "/account" }, method = RequestMethod.GET)
 	public HttpEntity<ActionDescriptor> bankAccountForm() {
-		ActionDescriptor form = ControllerFormBuilder.createFormFor(methodOn(BankingController.class).bankAccount(null),
+		ActionDescriptor form = ControllerActionBuilder.createActionFor(methodOn(BankingController.class).bankAccount(null),
 				"bankAccountForm");
 		return new HttpEntity<ActionDescriptor>(form);
 	}
@@ -115,7 +115,7 @@ public class BankingController {
 	@RequestMapping("/account/{accountNumber}/transfer")
 	public HttpEntity<ActionDescriptor> moneyTransferForm(@PathVariable String accountNumber) {
 
-		ActionDescriptor form = createFormFor(methodOn(BankingController.class).moneyTransfer(accountNumber, null, null),
+		ActionDescriptor form = createActionFor(methodOn(BankingController.class).moneyTransfer(accountNumber, null, null),
 				"moneyTransferForm");
 		return new HttpEntity<ActionDescriptor>(form);
 	}

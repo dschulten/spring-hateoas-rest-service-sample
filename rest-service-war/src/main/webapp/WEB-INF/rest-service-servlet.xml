@@ -38,7 +38,7 @@
     </property>
   </bean>
 
-  <bean id="htmlFormMessageConverter" class="org.springframework.hateoas.action.HtmlFormMessageConverter">
+  <bean id="htmlFormMessageConverter" class="org.springframework.hateoas.HtmlResourceMessageConverter">
     <property name="supportedMediaTypes">
       <list>
         <value>text/html</value>
@@ -73,6 +73,18 @@
       </list>
     </property>
   </bean>
+  
+<!-- experimental: configure Hal support -->
+<!--     <bean id="jackson1HalModule" class="org.springframework.hateoas.hal.Jackson1HalModule" /> -->
+    
+<!--     <bean -->
+<!--       class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"> -->
+<!--       <property name="targetObject" ref="jacksonObjectMapper" /> -->
+<!--       <property name="targetMethod" value="registerModule" /> -->
+<!--       <property name="arguments"> -->
+<!--         <ref local="jackson1HalModule"/> -->
+<!--       </property> -->
+<!--     </bean> -->
 
   <!-- Date is converted to ISO String, not to long timestamp -->
   <!-- <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"> -->

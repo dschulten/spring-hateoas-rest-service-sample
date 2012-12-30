@@ -1,6 +1,6 @@
 package de.escalon.rest.bt.dragon;
 
-import static org.springframework.hateoas.mvc.ControllerFormBuilder.createFormFor;
+import static org.springframework.hateoas.mvc.ControllerActionBuilder.createActionFor;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
@@ -24,7 +24,7 @@ public class DragonController {
 
 	@RequestMapping("/entry")
 	public HttpEntity<ActionDescriptor> start() {
-		return new HttpEntity<ActionDescriptor>(createFormFor(methodOn(DragonController.class).livingdragon(null, null),
+		return new HttpEntity<ActionDescriptor>(createActionFor(methodOn(DragonController.class).livingdragon(null, null),
 				"dragonName"));
 	}
 
