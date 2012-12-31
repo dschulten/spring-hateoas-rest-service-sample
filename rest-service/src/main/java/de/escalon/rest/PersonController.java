@@ -11,7 +11,8 @@ import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.PagedResources.PageMetadata;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.action.ActionDescriptor;
-import org.springframework.hateoas.action.Hidden;
+import org.springframework.hateoas.action.Input;
+import org.springframework.hateoas.action.Type;
 import org.springframework.hateoas.mvc.ControllerActionBuilder;
 import org.springframework.hateoas.sample.SamplePersonController;
 import org.springframework.http.HttpEntity;
@@ -93,7 +94,7 @@ public class PersonController {
 		resource.add(describedBy);
 
 		// variant 1: products are separate
-//		resource.add(linkTo(methodOn(ProductController.class).getProductsOfPerson(personId)).withRel("products"));
+		// resource.add(linkTo(methodOn(ProductController.class).getProductsOfPerson(personId)).withRel("products"));
 
 		// variant 2: products are embedded in customer
 		Iterable<? extends Product> products = productAccess.getProductsOfPerson(personId);
@@ -121,8 +122,8 @@ public class PersonController {
 	}
 
 	@RequestMapping(value = "/customer", method = RequestMethod.PUT, params = { "personId", "firstname", "lastname" })
-	public HttpEntity<PersonResource> editPerson(@RequestParam @Hidden Long personId, @RequestParam String firstname,
-			@RequestParam String lastname) {
+	public HttpEntity<PersonResource> editPerson(@RequestParam @Input(Type.HIDDEN) Long personId,
+			@RequestParam String firstname, @RequestParam String lastname) {
 
 		Person person = personAccess.getPerson(personId);
 
