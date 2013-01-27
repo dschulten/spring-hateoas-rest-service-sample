@@ -10,8 +10,8 @@ public class PersonResourceAssembler extends ResourceAssemblerSupport<Person, Pe
 
 	public PersonResource toResource(Person person) {
 		PersonResource resource = createResource(person);
-		resource.setFirstname(person.getFirstname());
-		resource.setLastname(person.getLastname());
+		resource.setGivenName(person.getFirstname());
+		resource.setFamilyName(person.getLastname());
 		return resource;
 	}
 

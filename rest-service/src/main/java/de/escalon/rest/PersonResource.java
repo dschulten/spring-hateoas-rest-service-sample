@@ -18,19 +18,19 @@ public class PersonResource extends Resource<Person> {
 		this.products = wrapped;
 	}
 
-	public String getFirstname() {
+	public String getGivenName() {
 		return firstname;
 	}
 
-	public void setFirstname(String firstname) {
+	public void setGivenName(String firstname) {
 		this.firstname = firstname;
 	}
 
-	public String getLastname() {
+	public String getFamilyName() {
 		return lastname;
 	}
 
-	public void setLastname(String lastname) {
+	public void setFamilyName(String lastname) {
 		this.lastname = lastname;
 	}
 }

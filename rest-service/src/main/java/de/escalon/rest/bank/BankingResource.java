@@ -4,8 +4,6 @@ import org.springframework.hateoas.Resource;
 
 public class BankingResource extends Resource<Banking> {
 
-	
-	
 	private String bankName;
 	private String blz;
 	private String bic;

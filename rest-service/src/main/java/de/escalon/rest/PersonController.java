@@ -14,7 +14,6 @@ import org.springframework.hateoas.action.ActionDescriptor;
 import org.springframework.hateoas.action.Input;
 import org.springframework.hateoas.action.Type;
 import org.springframework.hateoas.mvc.ControllerActionBuilder;
-import org.springframework.hateoas.sample.SamplePersonController;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -115,8 +114,9 @@ public class PersonController {
 
 		Person person = personAccess.getPerson(personId);
 
-		ActionDescriptor descriptor = ControllerActionBuilder.createActionFor(methodOn(SamplePersonController.class)
-				.editPerson(person.getId(), person.getFirstname(), person.getLastname()), "changePerson");
+		ActionDescriptor descriptor = ControllerActionBuilder.createActionFor(
+				methodOn(PersonController.class).editPerson(person.getId(), person.getFirstname(), person.getLastname()),
+				"changePerson");
 
 		return new HttpEntity<ActionDescriptor>(descriptor);
 	}

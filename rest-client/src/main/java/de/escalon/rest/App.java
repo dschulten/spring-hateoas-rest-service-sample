@@ -64,7 +64,7 @@ public class App {
 		 * }
 		 * </pre>
 		 */
-		// sensing if I only have a goal like moneytransferreceipt
+		// TODO sensing if I only have a goal like moneytransferreceipt
 		// use schema.org actions
 		getProductsOfPerson(createBrowserForUri(uri), 1);
 		getProductsOfPerson(createBrowserForUri(uri), 2);

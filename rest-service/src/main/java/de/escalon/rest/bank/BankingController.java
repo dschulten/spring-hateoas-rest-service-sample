@@ -47,6 +47,7 @@ public class BankingController {
 		resource.add(new Link("http://localhost:8080/banking/ns/bank", "describedBy"));
 		resource.add(ControllerLinkBuilder.linkTo(methodOn(BankingController.class).bankAccountForm()).withRel(
 				"http://localhost:8080/banking/ns/account"));
+		
 		return new HttpEntity<BankingResource>(resource);
 	}
 
